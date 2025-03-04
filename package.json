@@ -1,0 +1,41 @@
+{
+  "name": "simple-ui-vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "pnpm --filter docs docs:dev",
+    "docs:build": "pnpm --filter docs docs:build",
+    "docs:preview": "pnpm --filter docs docs:preview",
+    "docs:build-netlify": "pnpm lib:build && pnpm docs:build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write packages",
+    "play:vue": "pnpm --filter ./packages/library dev",
+    "play:nuxt": "pnpm --filter ./packages/nuxt-module dev",
+    "story:dev": "pnpm --filter simple-ui-vue story:dev",
+    "story:build": "pnpm --filter simple-ui-vue story:build",
+    "story:preview": "pnpm --filter simple-ui-vue story:preview",
+    "lib:build": "pnpm --filter simple-ui-vue build",
+    "nuxt-module:dev-prepare": "pnpm --filter ./packages/nuxt-module dev:prepare",
+    "nuxt-module:prepack": "pnpm --filter ./packages/nuxt-module prepack",
+    "component:new": "hygen component new && pnpm lib:build",
+    "directive:new": "hygen directive new && pnpm lib:build",
+    "changeset": "npx changeset",
+    "changeset:version": "npx changeset version",
+    "changeset:publish": "pnpm lib:build && pnpm nuxt-module:prepack && npx changeset publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@changesets/cli": "^2.28.1",
+    "@rushstack/eslint-patch": "^1.10.5",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^9.32.0",
+    "hygen": "^6.2.11",
+    "prettier": "^3.5.3"
+  }
+}

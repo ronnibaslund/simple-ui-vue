@@ -34,6 +34,7 @@ export default defineConfig({
           { text: 'Badge', link: '/components/badge' },
           { text: 'Tabs', link: '/components/tabs' },
           { text: 'Button', link: '/components/button' },
+          { text: 'BrowserMockup', link: '/components/browsermockup' },
           // do not remove - used by hygen
         ]
       }

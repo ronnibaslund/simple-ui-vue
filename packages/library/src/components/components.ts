@@ -3,6 +3,7 @@ import SimpleLoading from './SimpleLoading/SimpleLoading.vue'
 import SimpleTabs from './SimpleTabs/SimpleTabs.vue'
 import SimpleTab from './SimpleTab/SimpleTab.vue'
 import SimpleButton from './SimpleButton/SimpleButton.vue'
+import SimpleBrowserMockup from './SimpleBrowserMockup/SimpleBrowserMockup.vue'
 // import - do not remove this line, used for hygen generations
 
 // ignore removal of traling comma by pretter so hygen can add new imports
@@ -13,5 +14,6 @@ export {
   SimpleTabs,
   SimpleTab,
   SimpleButton,
+  SimpleBrowserMockup,
   // export - do not remove this line, used for hygen generations
 }

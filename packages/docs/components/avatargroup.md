@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleAvatarGroup} from 'simple-ui-vue'
+import {SimpleAvatarGroup} from 'simple-daisy-vue'
 </script>
 
 # AvatarGroup Component

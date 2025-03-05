@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleRating} from 'simple-ui-vue'
+import {SimpleRating} from 'simple-daisy-vue'
 </script>
 
 # Rating Component

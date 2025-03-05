@@ -2,7 +2,7 @@
 import daisyui from 'daisyui'
 
 export default {
-  content: ['./**/*.md', './node_modules/simple-ui-vue/src/{components,directives}/**/*.{vue,ts}'],
+  content: ['./**/*.md', './node_modules/simple-daisy-vue/src/{components,directives}/**/*.{vue,ts}'],
   theme: {
     extend: {}
   },

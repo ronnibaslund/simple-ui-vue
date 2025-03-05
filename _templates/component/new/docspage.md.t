@@ -3,7 +3,7 @@ to: packages/docs/components/<%=h.componentNameNoPrefix(name).toLowerCase()%>.md
 ---
 
 <script setup lang="ts">
-import {<%= h.componentNameWithPrefix(name) %>} from 'simple-ui-vue'
+import {<%= h.componentNameWithPrefix(name) %>} from 'simple-daisy-vue'
 </script>
 
 # <%=h.capitalize(h.componentNameNoPrefix(name))%> Component

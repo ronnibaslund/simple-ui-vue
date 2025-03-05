@@ -1,5 +1,5 @@
 {
-  "name": "simple-ui-vue",
+  "name": "simple-daisy-vue",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,18 +12,15 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write packages",
     "play:vue": "pnpm --filter ./packages/library dev",
-    "play:nuxt": "pnpm --filter ./packages/nuxt-module dev",
-    "story:dev": "pnpm --filter simple-ui-vue story:dev",
-    "story:build": "pnpm --filter simple-ui-vue story:build",
-    "story:preview": "pnpm --filter simple-ui-vue story:preview",
-    "lib:build": "pnpm --filter simple-ui-vue build",
-    "nuxt-module:dev-prepare": "pnpm --filter ./packages/nuxt-module dev:prepare",
-    "nuxt-module:prepack": "pnpm --filter ./packages/nuxt-module prepack",
+    "story:dev": "pnpm --filter simple-daisy-vue story:dev",
+    "story:build": "pnpm --filter simple-daisy-vue story:build",
+    "story:preview": "pnpm --filter simple-daisy-vue story:preview",
+    "lib:build": "pnpm --filter simple-daisy-vue build",
     "component:new": "hygen component new && pnpm lib:build",
     "directive:new": "hygen directive new && pnpm lib:build",
     "changeset": "npx changeset",
     "changeset:version": "npx changeset version",
-    "changeset:publish": "pnpm lib:build && pnpm nuxt-module:prepack && npx changeset publish"
+    "changeset:publish": "pnpm lib:build && npx changeset publish",
   },
   "keywords": [],
   "author": "",
@@ -37,5 +34,8 @@
     "eslint-plugin-vue": "^9.32.0",
     "hygen": "^6.2.11",
     "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "daisyui": "^5.0.0"
   }
 }

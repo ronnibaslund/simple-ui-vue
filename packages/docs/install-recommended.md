@@ -13,22 +13,22 @@ This installation procedure is the recommended way of using this component libra
 ::: code-group
 
 ```bash [npm]
-npm install simple-ui-vue
+npm install simple-daisy-vue
 ```
 
 ```bash [pnpm]
-pnpm add simple-ui-vue
+pnpm add simple-daisy-vue
 ```
 
 ```bash [yarn]
-yarn add simple-ui-vue
+yarn add simple-daisy-vue
 ```
 
 :::
 
 ## Step 2. Configure Tailwind CSS
 
-[Use the official Tailwind installation guide for Vite/Vue](https://tailwindcss.com/docs/guides/vite#vue). However, you do not have to do the actual install step, as it's already installed as a dependency of simple-ui-vue.
+[Use the official Tailwind installation guide for Vite/Vue](https://tailwindcss.com/docs/guides/vite#vue). However, you do not have to do the actual install step, as it's already installed as a dependency of simple-daisy-vue.
 
 Make sure your tailwind config includes the following:
 
@@ -40,7 +40,7 @@ export default {
   content: [
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
-    './node_modules/simple-ui-vue/src/{components,directives}/**/*.{vue,ts}'
+    './node_modules/simple-daisy-vue/src/{components,directives}/**/*.{vue,ts}'
   ],
   plugins: [daisyui]
 }
@@ -52,11 +52,11 @@ export default {
 
 ```vue [App.vue]
 <script setup lang="ts">
-import { DaisyAlert } from 'simple-ui-vue'
+import { SimpleAlert } from 'simple-daisy-vue'
 </script>
 
 <template>
-  <DaisyAlert type="success"> Great! You've Successfully Installed DaisyVue </DaisyAlert>
+  <SimpleAlert type="success"> Great! You've Successfully Installed simple-daisy-vue </SimpleAlert>
 </template>
 ```
 

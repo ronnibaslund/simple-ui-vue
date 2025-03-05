@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleLoading} from 'simple-ui-vue'
+import {SimpleLoading} from 'simple-daisy-vue'
 </script>
 
 # Loading Component

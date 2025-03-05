@@ -16,7 +16,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
-      name: 'DaisyVue',
+      name: 'SimpleVue',
       fileName: 'lib'
     },
     rollupOptions: {

@@ -1,6 +1,6 @@
 # Installation (Global Components)
 
-This installation procedure **IS NOT** the recommended way of using this component library, but is the quickest way to get up and going and start playing around with DaisyVue.
+This installation procedure **IS NOT** the recommended way of using this component library, but is the quickest way to get up and going and start playing around with SimpleDaisyVue.
 
 It involves:
 
@@ -15,15 +15,15 @@ It involves:
 ::: code-group
 
 ```bash [npm]
-npm install simple-ui-vue
+npm install simple-daisy-vue
 ```
 
 ```bash [pnpm]
-pnpm add simple-ui-vue
+pnpm add simple-daisy-vue
 ```
 
 ```bash [yarn]
-yarn add simple-ui-vue
+yarn add simple-daisy-vue
 ```
 
 :::
@@ -36,9 +36,9 @@ yarn add simple-ui-vue
 import { createApp } from 'vue'
 import App from './App.vue'
 
-import { Plugin as DaisyVuePlugin } from 'simple-ui-vue'
+import { Plugin as SimpleDaisyVuePlugin } from 'simple-daisy-vue'
 
-createApp(app).use(DaisyVuePlugin).mount('#app')
+createApp(app).use(SimpleDaisyVuePlugin).mount('#app')
 ```
 
 :::
@@ -49,7 +49,7 @@ createApp(app).use(DaisyVuePlugin).mount('#app')
 
 ```vue [App.vue]
 <template>
-  <DaisyAlert type="success"> Great! You've Successfully Installed DaisyVue </DaisyAlert>
+  <SimpleAlert type="success"> Great! You've Successfully Installed DaisyVue </SimpleAlert>
 </template>
 ```
 

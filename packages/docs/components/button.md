@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {SimpleButton, SimpleTabs, SimpleTab} from 'simple-ui-vue'
-import { colorsBrand, colorsState } from 'simple-ui-vue/globals'
+import {SimpleButton, SimpleTabs, SimpleTab} from 'simple-daisy-vue'
+import { colorsBrand, colorsState } from 'simple-daisy-vue/globals'
 </script>
 
 # Button Component

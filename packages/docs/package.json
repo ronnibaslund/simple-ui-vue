@@ -11,7 +11,7 @@
     "vitepress": "1.0.0-rc.42"
   },
   "dependencies": {
-    "simple-vue": "workspace:^",
+    "simple-daisy-vue": "workspace:^",
     "vue": "^3.4.19"
   }
 }

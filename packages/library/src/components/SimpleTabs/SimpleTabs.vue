@@ -16,7 +16,7 @@ function registerTab(label: string) {
   tabs.value.push(label)
   if (!_activeTab.value) _activeTab.value = label
 }
-provide('DaisyVueTabsComponentRegisterTab', registerTab)
+provide('SimpleTabsComponentRegisterTab', registerTab)
 
 const activeTab = defineModel('activeTab')
 const _activeTab = ref(activeTab.value)
@@ -27,7 +27,7 @@ const tabsData = computed(() => {
     activeTab: _activeTab.value
   }
 })
-provide('DaisyVueTabsData', tabsData)
+provide('SimpleTabsData', tabsData)
 
 const classes = computed(() => {
   return {

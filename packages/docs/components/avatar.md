@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleAvatar} from 'simple-ui-vue'
+import {SimpleAvatar} from 'simple-daisy-vue'
 </script>
 
 # Avatar Component

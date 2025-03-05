@@ -1,21 +1,21 @@
 # Installation (Nuxt Module)
 
-DaisyVue comes with a Nuxt module that auto imports all components in a tree-shakable fashion.
+SimpleDaisyVue comes with a Nuxt module that auto imports all components in a tree-shakable fashion.
 
 ## Step 1. Install the Module
 
 ::: code-group
 
 ```bash [npm]
-npm install nuxt-simple-ui-vue
+npm install nuxt-simple-daisy-vue
 ```
 
 ```bash [pnpm]
-pnpm add nuxt-simple-ui-vue
+pnpm add nuxt-simple-daisy-vue
 ```
 
 ```bash [yarn]
-yarn add nuxt-simple-ui-vue
+yarn add nuxt-simple-daisy-vue
 ```
 
 :::
@@ -26,7 +26,7 @@ yarn add nuxt-simple-ui-vue
 
 ```ts [nuxt.config.ts]
 export default defineNuxtConfig({
-  modules: ['nuxt-simple-ui-vue']
+  modules: ['nuxt-simple-daisy-vue']
   //...
 })
 ```
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
 </script>
 
 <template>
-  <DaisyAlert type="success"> Great! You've Successfully Installed DaisyVue </DaisyAlert>
+  <DaisyAlert type="success"> Great! You've Successfully Installed SimpleDaisyVue </DaisyAlert>
 </template>
 ```
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleSteps} from 'simple-ui-vue'
+import {SimpleSteps} from 'simple-daisy-vue'
 </script>
 
 # Steps Component

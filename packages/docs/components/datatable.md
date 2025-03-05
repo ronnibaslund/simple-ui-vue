@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleDataTable} from 'simple-ui-vue'
+import {SimpleDataTable} from 'simple-daisy-vue'
 </script>
 
 # DataTable Component

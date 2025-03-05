@@ -5,11 +5,11 @@ const props = defineProps<{
   name: string
 }>()
 
-const registerTab = inject('DaisyVueTabsComponentRegisterTab', (name: string) => {})
+const registerTab = inject('SimpleTabsComponentRegisterTab', (name: string) => {})
 registerTab(props.name)
 
 const tabsData = inject(
-  'DaisyVueTabsData',
+  'SimpleTabsData',
   ref({
     activeTab: ''
   })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleTabs, SimpleTab} from 'simple-ui-vue'
+import {SimpleTabs, SimpleTab} from 'simple-daisy-vue'
 
 const types = ['Bordered', 'Boxed', 'Lifted'] as const
 

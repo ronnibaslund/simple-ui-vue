@@ -7,7 +7,7 @@ const state = reactive({})
 <template>
   <Story :layout="{ type: 'grid', width: '100%' }">
     <Variant title="Variant Title">
-      <SimpleBrowserMockup url="https://github.com/ronnibaslund/simple-ui-vue">Hello!</SimpleBrowserMockup>
+      <SimpleBrowserMockup url="https://github.com/ronnibaslund/simple-vue">Hello!</SimpleBrowserMockup>
     </Variant>
 
     <template #controls></template>

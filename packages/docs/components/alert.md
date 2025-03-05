@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleAlert} from 'simple-ui-vue'
+import {SimpleAlert} from 'simple-daisy-vue'
 </script>
 
 # Alert Component

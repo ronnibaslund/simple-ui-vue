@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleBadge} from 'simple-ui-vue'
+import {SimpleBadge} from 'simple-daisy-vue'
 </script>
 
 # Badge Component

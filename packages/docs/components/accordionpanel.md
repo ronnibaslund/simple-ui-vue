@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {SimpleAccordionPanel} from 'simple-ui-vue'
+import {SimpleAccordionPanel} from 'simple-daisy-vue'
 </script>
 
 # AccordionPanel Component

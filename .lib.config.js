@@ -1,4 +1,4 @@
 module.exports = {
-  name: 'SimpleUIVue',
+  name: 'SimpleVue',
   prefix: 'Simple'
 }

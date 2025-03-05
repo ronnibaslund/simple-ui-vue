@@ -1,4 +1,4 @@
-# simple-vue
+# simple-daisy-vue
 
 ## 1.1.0
 

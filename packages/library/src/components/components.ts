@@ -10,6 +10,8 @@ import SimpleAvatar from './SimpleAvatar/SimpleAvatar.vue'
 import SimpleAvatarGroup from './SimpleAvatarGroup/SimpleAvatarGroup.vue'
 import SimpleContextMenu from './SimpleContextMenu/SimpleContextMenu.vue'
 import SimpleAlert from './SimpleAlert/SimpleAlert.vue'
+import SimpleDataTable from './SimpleDataTable/SimpleDataTable.vue'
+import SimpleRating from './SimpleRating/SimpleRating.vue'
 // import - do not remove this line, used for hygen generations
 
 // ignore removal of traling comma by pretter so hygen can add new imports
@@ -27,5 +29,7 @@ export {
   SimpleAvatarGroup,
   SimpleContextMenu,
   SimpleAlert,
+  SimpleDataTable,
+  SimpleRating,
   // export - do not remove this line, used for hygen generations
 }

@@ -39,7 +39,7 @@ function handleToggle() {
     :class="{ 'collapse-open': accordion.activeIds.includes(id) }"
   >
     <button
-      class="block font-bold text-left cursor-pointer collapse-title focus:shadow-primary focus:outline-none"
+      class="block font-bold text-left cursor-pointer collapse-title focus:shadow-primary focus:outline-hidden"
       @click="handleToggle"
       @keydown.Enter="handleToggle"
     >

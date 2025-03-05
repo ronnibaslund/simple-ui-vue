@@ -30,7 +30,7 @@ defineProps<{
       <slot></slot>
     </ContextMenuTrigger>
     <ContextMenuPortal>
-      <ContextMenuContent class="w-56 rounded menu bg-base-200" :side-offset="5">
+      <ContextMenuContent class="w-56 rounded-sm menu bg-base-200" :side-offset="5">
         <ul>
           <li v-for="item in items" :key="item.label">
             <component :is="item.children ? ContextMenuSub : ContextMenuItem">
@@ -47,7 +47,7 @@ defineProps<{
 
               <ContextMenuPortal v-if="item.children">
                 <ContextMenuSubContent
-                  class="w-56 pl-5 rounded menu bg-base-200"
+                  class="w-56 pl-5 rounded-sm menu bg-base-200"
                   :side-offset="0"
                   :align-offset="0"
                 >

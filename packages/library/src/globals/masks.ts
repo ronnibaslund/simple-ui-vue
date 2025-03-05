@@ -16,7 +16,7 @@ export const masks = [
   'triangle', // mask-triangle
   'triangle-2', // mask-triangle-2
   'triangle-3', // mask-triangle-3
-  'triangle-4' // mask-triangle-4
+  'triangle-4', // mask-triangle-4
 ] as const
 
 export type Masks = (typeof masks)[number]

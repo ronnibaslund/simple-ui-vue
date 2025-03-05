@@ -6,6 +6,9 @@ import SimpleButton from './SimpleButton/SimpleButton.vue'
 import SimpleBrowserMockup from './SimpleBrowserMockup/SimpleBrowserMockup.vue'
 import SimpleAccordion from './SimpleAccordion/SimpleAccordion.vue'
 import SimpleAccordionPanel from './SimpleAccordionPanel/SimpleAccordionPanel.vue'
+import SimpleAvatar from './SimpleAvatar/SimpleAvatar.vue'
+import SimpleAvatarGroup from './SimpleAvatarGroup/SimpleAvatarGroup.vue'
+import SimpleContextMenu from './SimpleContextMenu/SimpleContextMenu.vue'
 // import - do not remove this line, used for hygen generations
 
 // ignore removal of traling comma by pretter so hygen can add new imports
@@ -19,5 +22,8 @@ export {
   SimpleBrowserMockup,
   SimpleAccordion,
   SimpleAccordionPanel,
+  SimpleAvatar,
+  SimpleAvatarGroup,
+  SimpleContextMenu,
   // export - do not remove this line, used for hygen generations
 }

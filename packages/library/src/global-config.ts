@@ -16,7 +16,7 @@ export const defaults: Config = {
   }
 }
 
-export const configKey = 'daisyVueProvideInjectKey'
+export const configKey = 'simpleDaisyVueProvideInjectKey'
 export function setConfig(config: Config, app?: App) {
   if (app) {
     app.provide(configKey, defu(config, defaults))

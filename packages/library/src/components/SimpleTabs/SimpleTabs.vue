@@ -58,14 +58,16 @@ const classes = computed(() => {
 </template>
 
 <style scoped>
+/**
 [data-type='lifted'] :deep(.tabpanel) {
-  @apply p-6 rounded-t-none bg-base-100 border-base-300 rounded-box;
+  @apply rounded-t-none rounded-box;
 }
 [data-type='boxed'] :deep(.tabpanel) {
-  @apply p-6 border-base-300 rounded-box;
+  @apply border-base-300 rounded-box;
 }
 
 [data-type='bordered'] :deep(.tabpanel) {
-  @apply p-6 border-base-300 rounded-box;
+  @apply border-base-300 rounded-box;
 }
+   */
 </style>

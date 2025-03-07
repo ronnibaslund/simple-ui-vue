@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <DaisyButton :color="'primary'" loading>Click Me</DaisyButton>
+  <SimpleButton :color="'primary'">Click Me</SimpleButton>
 </template>

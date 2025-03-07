@@ -1,4 +1,6 @@
+
 import './assets/tailwind.css'
+
 // Select the node that will be observed for mutations
 const targetNode = document.querySelector('html')
 setTheme()

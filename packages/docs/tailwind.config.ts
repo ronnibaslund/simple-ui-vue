@@ -1,10 +1,14 @@
 /** @type {import('tailwindcss').Config} */
-import daisyui from 'daisyui'
+// import daisyui from 'daisyui'
 
 export default {
-  content: ['./**/*.md', './node_modules/simple-daisy-vue/src/{components,directives}/**/*.{vue,ts}'],
+  content: [
+    './**/*.md', 
+    ".vitepress/theme/*.{js,ts,vue}",
+    './node_modules/simple-daisy-vue/src/{components,directives}/**/*.{vue,ts}'
+  ],
   theme: {
     extend: {}
   },
-  plugins: [daisyui]
+  // plugins: [daisyui]
 }

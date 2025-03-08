@@ -31,9 +31,9 @@ provide('SimpleTabsData', tabsData)
 
 const classes = computed(() => {
   return {
-    bordered: 'tabs-bordered',
-    boxed: 'tabs-boxed',
-    lifted: 'tabs-lifted'
+    bordered: 'tabs-border',
+    boxed: 'tabs-box',
+    lifted: 'tabs-lift'
   }[props.type]
 })
 </script>
@@ -52,8 +52,8 @@ const classes = computed(() => {
           {{ tab }}
         </button>
       </template>
+      <slot></slot>
     </div>
-    <slot></slot>
   </div>
 </template>
 

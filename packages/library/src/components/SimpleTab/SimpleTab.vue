@@ -20,12 +20,12 @@ const isActive = computed(() => tabsData.value.activeTab === props.name)
 
 <template>
   <div
-    role="tabpanel"
-    class="tabpanel"
+    class="tab-content border-base-300 bg-base-100 p-10"
     :class="{
       hidden: !isActive
     }"
   >
+    test
     <slot></slot>
   </div>
 </template>

@@ -2,7 +2,7 @@
  * Customize default theme styling by overriding CSS variables:
  * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
  */
-@import "tailwindcss";
+ @import "tailwindcss";
 
 :root {
   --vp-layout-max-width: 95%;

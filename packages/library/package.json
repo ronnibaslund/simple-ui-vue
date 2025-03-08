@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.6.0",
-    "@histoire/plugin-vue": "^0.17.17",
+    "@histoire/plugin-vue": "^1.0.0-alpha.2",
     "@rushstack/eslint-patch": "^1.10.5",
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.6",
@@ -76,7 +76,7 @@
     "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.21.0",
     "eslint-plugin-vue": "^10.0.0",
-    "histoire": "^0.17.17",
+    "histoire": "^1.0.0-alpha.2",
     "jsdom": "^26.0.0",
     "npm-run-all2": "^7.0.2",
     "prettier": "^3.5.3",

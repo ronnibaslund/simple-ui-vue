@@ -22,6 +22,9 @@ const activeTab = defineModel('activeTab')
 const _activeTab = ref(activeTab.value)
 watch(_activeTab, () => (activeTab.value = _activeTab.value))
 
+// set the active tab from the outside
+provide('SimpleTabsComponentRegisterSelectedTab', (name) => (_activeTab.value = name))
+
 const tabsData = computed(() => {
   return {
     activeTab: _activeTab.value
@@ -41,33 +44,9 @@ const classes = computed(() => {
 <template>
   <div :data-type="type">
     <div role="tablist" class="tabs" :class="classes">
-      <template v-for="tab in tabs" :key="tab">
-        <button
-          @click="_activeTab = tab"
-          role="tab"
-          class="tab"
-          :aria-label="tab"
-          :class="{ 'tab-active': activeTab === tab }"
-        >
-          {{ tab }}
-        </button>
-      </template>
       <slot></slot>
     </div>
   </div>
 </template>
 
-<style scoped>
-/**
-[data-type='lifted'] :deep(.tabpanel) {
-  @apply rounded-t-none rounded-box;
-}
-[data-type='boxed'] :deep(.tabpanel) {
-  @apply border-base-300 rounded-box;
-}
-
-[data-type='bordered'] :deep(.tabpanel) {
-  @apply border-base-300 rounded-box;
-}
-   */
-</style>
+<style scoped></style>

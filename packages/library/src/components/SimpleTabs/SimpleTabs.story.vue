@@ -26,7 +26,5 @@ const types = ['bordered', 'boxed', 'lifted'] as const
         </SimpleTab>
       </SimpleTabs>
     </Variant>
-
-    <template #controls> </template>
   </Story>
 </template>

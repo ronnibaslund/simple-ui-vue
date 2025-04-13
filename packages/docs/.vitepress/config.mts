@@ -44,6 +44,7 @@ export default defineConfig({
           { text: 'DataTable', link: '/components/datatable' },
           { text: 'Rating', link: '/components/rating' },
           { text: 'Steps', link: '/components/steps' },
+          { text: 'Toggle', link: '/components/toggle' },
           // do not remove - used by hygen
         ]
       }

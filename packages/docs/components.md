@@ -14,4 +14,5 @@
 - [DataTable](/components/datatable)
 - [Rating](/components/rating)
 - [Steps](/components/steps)
+- [Toggle](/components/toggle)
 <!--do not remove - used by hygen-->

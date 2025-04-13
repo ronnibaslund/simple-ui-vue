@@ -20,5 +20,17 @@ export const colorsContent = [
 ] as const
 export type ColorsContent = (typeof colorsContent)[number]
 
+export const toggleColorsContent = [
+  'toggle-neutral',
+  'toggle-primary',
+  'toggle-secondary',
+  'toggle-accent',
+  'toggle-error',
+  'toggle-success',
+  'toggle-info',
+] as const
+export type ToggleColorsContent = (typeof toggleColorsContent)[number]
+
+
 export const colors = [...colorsBrand, ...colorsState, ...colorsBase, ...colorsContent] as const
 export type Colors = (typeof colors)[number]

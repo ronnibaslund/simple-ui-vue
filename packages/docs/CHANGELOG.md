@@ -1,5 +1,16 @@
 # docs
 
+## 1.2.0
+
+### Minor Changes
+
+- 3d9a508: fixed small bugs
+
+### Patch Changes
+
+- Updated dependencies [3d9a508]
+  - simple-daisy-vue@1.3.0
+
 ## 1.1.1
 
 ### Patch Changes

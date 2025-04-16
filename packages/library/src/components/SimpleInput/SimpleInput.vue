@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
 import type { Sizes, ColorsBrand, ColorsState } from '../../globals'
 
 const props = withDefaults(
@@ -15,7 +14,7 @@ const props = withDefaults(
     fieldsetLegend?: string
     fieldsetLabel?: string
     icon?: string
-    iconPosition?: 'left' | 'right'
+    iconSize?: number
   }>(),
   {
     type: 'text',
@@ -81,11 +80,16 @@ const type = computed(() => {
   }[props.type]
 })
 
+const iconClasses = computed(() => {
+  const size = props.iconSize ? `text-${props.iconSize}` : 'size-5.5'
+  return `${size} ${props.icon}` 
+})
 </script>
 
 <template>
+  
   <label :class="[colorClasses, sizeClasses, 'input']" v-if="!fieldset">
-    <Icon :icon="icon" width="1.5rem" v-if="icon" />
+    <span class="iconify text-base-content/60" :class="iconClasses"></span>
     <input
       v-model="inputValue"
       :type="type"
@@ -97,7 +101,7 @@ const type = computed(() => {
   <fieldset class="fieldset" v-if="fieldset">
     <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}</legend>
     <label :class="[colorClasses, sizeClasses, 'input']">
-      <Icon :icon="icon" width="1.5rem" v-if="icon" />
+      <span class="iconify text-base-content/60" :class="iconClasses"></span>
       <input
         v-model="inputValue"
         :type="type"

@@ -34,13 +34,13 @@ const state = reactive({
 <template>
   <Story :layout="{ type: 'grid', width: '100%' }" title="SimpleInput">
     <Variant title="Default">
-      <SimpleInput placeholder="Placeholder" color="error" :type="state.type" icon="lucide:user" />
+      <SimpleInput placeholder="Placeholder" color="error" :type="state.type" icon="lucide--user" />
     </Variant>
 
     <Variant title="Variant Title" description="Variant description">
       <SimpleInput
         :type="state.type"
-        icon="lucide:user"
+        icon="lucide--user"
         :fieldset="true"
         :fieldset-legend="state.fieldsetLegend"
         :fieldset-label="state.fieldsetLabel"

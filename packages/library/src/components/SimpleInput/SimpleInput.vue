@@ -81,7 +81,7 @@ const type = computed(() => {
 })
 
 const iconClasses = computed(() => {
-  const size = props.iconSize ? `text-${props.iconSize}` : 'size-5.5'
+  const size = props.iconSize ? `size-${props.iconSize}` : 'size-6'
   return `${size} ${props.icon}` 
 })
 </script>

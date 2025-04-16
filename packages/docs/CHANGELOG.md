@@ -1,5 +1,16 @@
 # docs
 
+## 1.3.0
+
+### Minor Changes
+
+- 85f37df: improved SimpleInput
+
+### Patch Changes
+
+- Updated dependencies [85f37df]
+  - simple-daisy-vue@1.4.0
+
 ## 1.2.0
 
 ### Minor Changes

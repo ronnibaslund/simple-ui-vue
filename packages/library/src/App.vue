@@ -21,6 +21,9 @@ const test = ref(true)
 
     <section>
       <h2>SimpleInput</h2>
+      <p>Icons: <a href="https://icon-sets.iconify.design/carbon/?keyword=carbon">https://icon-sets.iconify.design/carbon/?keyword=carbon</a></p>
+      <br>
+      
       <SimpleInput
         type="text"
         placeholder="Type here"
@@ -38,6 +41,7 @@ const test = ref(true)
         :fieldset="true"
         fieldsetLegend="This is a legend"
         fieldsetLabel="This is a helper text"
+        icon="carbon:error"
       />
     </section>
   </div>

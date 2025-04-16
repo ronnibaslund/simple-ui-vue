@@ -1,14 +1,5 @@
 <script setup lang="ts">
-/*
-  <SimpleInput
-    type="text"
-    placeholder="Type here"
-    class="input"
-    :color="'primary'"
-    :size="'lg'"
-    :disabled="false" />
-*/
-
+import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 import type { Sizes, ColorsBrand, ColorsState } from '../../globals'
 
@@ -23,6 +14,8 @@ const props = withDefaults(
     fieldset?: boolean
     fieldsetLegend?: string
     fieldsetLabel?: string
+    icon?: string
+    iconPosition?: 'left' | 'right'
   }>(),
   {
     type: 'text',
@@ -42,10 +35,6 @@ const inputValue = computed({
   }
 })
 
-const inputType = computed(() => {
-  return props.type
-})
-
 const inputPlaceholder = computed(() => {
   return props.placeholder
 })
@@ -56,16 +45,16 @@ const inputDisabled = computed(() => {
 
 const colorClasses = computed(() => {
   return {
-    neutral: 'btn-neutral',
-    primary: 'btn-primary',
-    secondary: 'btn-secondary',
-    accent: 'btn-accent',
-    error: 'btn-error',
-    warning: 'btn-warning',
-    success: 'btn-success',
-    info: 'btn-info',
-    ghost: 'btn-ghost',
-    link: 'btn-link'
+    neutral: 'input-neutral',
+    primary: 'input-primary',
+    secondary: 'input-secondary',
+    accent: 'input-accent',
+    error: 'input-error',
+    warning: 'input-warning',
+    success: 'input-success',
+    info: 'input-info',
+    ghost: 'input-ghost',
+    link: 'input-link'
   }[props.color]
 })
 
@@ -78,27 +67,43 @@ const sizeClasses = computed(() => {
     xs: 'input-xs'
   }[props.size]
 })
+
+const type = computed(() => {
+  return {
+    text: 'text',
+    email: 'email',
+    password: 'password',
+    number: 'number',
+    date: 'date',
+    time: 'time',
+    url: 'url',
+    tel: 'tel'
+  }[props.type]
+})
 </script>
 
 <template>
-  <input
-    v-if="!fieldset"
-    v-model="inputValue"
-    :type="inputType"
-    :placeholder="inputPlaceholder"
-    :disabled="inputDisabled"
-    :class="[colorClasses, sizeClasses, 'input']"
-  />
+  <label :class="[colorClasses, sizeClasses, 'input']" v-if="!fieldset">
+    <Icon :icon="icon" width="1.5rem" v-if="icon" />
+    <input
+      v-model="inputValue"
+      :type="type"
+      :placeholder="inputPlaceholder"
+      :disabled="inputDisabled"
+    />
+  </label>
 
   <fieldset class="fieldset" v-if="fieldset">
     <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}</legend>
-    <input
-      v-model="inputValue"
-      :type="inputType"
-      :placeholder="inputPlaceholder"
-      :disabled="inputDisabled"
-      :class="[colorClasses, sizeClasses, 'input']"
-    />
+    <label :class="[colorClasses, sizeClasses, 'input']">
+      <Icon :icon="icon" width="1.5rem" v-if="icon" />
+      <input
+        v-model="inputValue"
+        :type="type"
+        :placeholder="inputPlaceholder"
+        :disabled="inputDisabled"
+      />
+    </label>
     <p class="fieldset-label" v-if="fieldsetLabel">{{ fieldsetLabel }}</p>
   </fieldset>
 </template>

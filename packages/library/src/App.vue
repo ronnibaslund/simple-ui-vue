@@ -30,6 +30,7 @@ const test = ref(true)
         :color="'primary'"
         :size="'md'"
         :disabled="false"
+        icon="lucide:user"
       />
 
       <SimpleInput
@@ -41,7 +42,7 @@ const test = ref(true)
         :fieldset="true"
         fieldsetLegend="This is a legend"
         fieldsetLabel="This is a helper text"
-        icon="carbon:error"
+        icon="lucide:user"
       />
     </section>
   </div>

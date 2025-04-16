@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
+import { Icon } from '@iconify/vue'
 import type { Sizes, ColorsBrand, ColorsState } from '../../globals'
 
 const props = withDefaults(
@@ -80,6 +80,7 @@ const type = computed(() => {
     tel: 'tel'
   }[props.type]
 })
+
 </script>
 
 <template>

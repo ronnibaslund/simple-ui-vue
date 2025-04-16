@@ -40,7 +40,7 @@ const state = reactive({
     <Variant title="Variant Title" description="Variant description">
       <SimpleInput
         :type="state.type"
-        icon="carbon:error"
+        icon="lucide:user"
         :fieldset="true"
         :fieldset-legend="state.fieldsetLegend"
         :fieldset-label="state.fieldsetLabel"

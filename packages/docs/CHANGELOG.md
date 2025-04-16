@@ -1,5 +1,16 @@
 # docs
 
+## 1.5.0
+
+### Minor Changes
+
+- 9c026ea: updated icon
+
+### Patch Changes
+
+- Updated dependencies [9c026ea]
+  - simple-daisy-vue@1.6.0
+
 ## 1.4.0
 
 ### Minor Changes

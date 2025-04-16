@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 1.6.0
+
+### Minor Changes
+
+- 9c026ea: updated icon
+
 ## 1.5.0
 
 ### Minor Changes

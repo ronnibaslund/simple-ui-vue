@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 1.5.0
+
+### Minor Changes
+
+- d11fa9a: icon fix
+
 ## 1.4.0
 
 ### Minor Changes

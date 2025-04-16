@@ -1,5 +1,16 @@
 # docs
 
+## 1.4.0
+
+### Minor Changes
+
+- d11fa9a: icon fix
+
+### Patch Changes
+
+- Updated dependencies [d11fa9a]
+  - simple-daisy-vue@1.5.0
+
 ## 1.3.0
 
 ### Minor Changes

@@ -66,7 +66,6 @@ const toggleChanged = () => {
         type="checkbox"
         class="toggle"
         :class="[toggleColorClasses, sizeClasses]"
-        checked="checked"
         @change="toggleChanged"
       />
       {{ label }}
@@ -76,7 +75,6 @@ const toggleChanged = () => {
       type="checkbox"
       class="toggle"
       :class="[toggleColorClasses, sizeClasses]"
-      checked="checked"
       @change="toggleChanged"
       v-else
     />

@@ -6,16 +6,52 @@ const test = ref(true)
 </script>
 
 <template>
-  <SimpleButton :color="'primary'">Click Me</SimpleButton>
-  <SimpleToggle v-model="test" color="warning" />
+  <div class="container">
+    <section>
+      <h2>SimpleButton</h2>
+      <SimpleButton :color="'primary'">Click Me</SimpleButton>
+    </section>
 
-  <input type="checkbox" checked="checked" class="toggle toggle-primary" />
-  <input type="checkbox" checked="checked" class="toggle toggle-secondary" />
-  <input type="checkbox" checked="checked" class="toggle toggle-accent" />
-  <input type="checkbox" checked="checked" class="toggle toggle-neutral" />
+    <section>
+      <h2>SimpleToggle</h2>
+      <SimpleToggle v-model="test" color="error" />
+      <SimpleToggle v-model="test" color="warning" />
+      <SimpleToggle v-model="test" color="success" />
+    </section>
 
-  <input type="checkbox" checked="checked" class="toggle toggle-info" />
-  <input type="checkbox" checked="checked" class="toggle toggle-success" />
-  <input type="checkbox" checked="checked" class="toggle toggle-warning" />
-  <input type="checkbox" checked="checked" class="toggle toggle-error" />
+    <section>
+      <h2>SimpleInput</h2>
+      <SimpleInput
+        type="text"
+        placeholder="Type here"
+        :color="'primary'"
+        :size="'md'"
+        :disabled="false"
+      />
+
+      <SimpleInput
+        type="text"
+        placeholder="Type here"
+        :color="'primary'"
+        :size="'lg'"
+        :disabled="false"
+        :fieldset="true"
+        fieldsetLegend="This is a legend"
+        fieldsetLabel="This is a helper text"
+      />
+    </section>
+  </div>
 </template>
+
+<style scoped>
+.container {
+  margin: 20px;
+}
+section {
+  margin-bottom: 2rem;
+}
+h2 {
+  margin-bottom: 1rem;
+
+}
+</style>

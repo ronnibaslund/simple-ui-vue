@@ -6,7 +6,6 @@
 - [Button](/components/button)
 - [BrowserMockup](/components/browsermockup)
 - [Accordion](/components/accordion)
-- [AccordionPanel](/components/accordionpanel)
 - [Avatar](/components/avatar)
 - [AvatarGroup](/components/avatargroup)
 - [ContextMenu](/components/contextmenu)
@@ -15,4 +14,5 @@
 - [Rating](/components/rating)
 - [Steps](/components/steps)
 - [Toggle](/components/toggle)
+- [Input](/components/input)
 <!--do not remove - used by hygen-->

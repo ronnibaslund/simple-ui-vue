@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.0.0
+
+### Major Changes
+
+- 0d3d83e: fixed tailwindcss bug
+
 ## 1.7.0
 
 ### Minor Changes

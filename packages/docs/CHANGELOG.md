@@ -1,5 +1,16 @@
 # docs
 
+## 2.0.0
+
+### Major Changes
+
+- 0d3d83e: fixed tailwindcss bug
+
+### Patch Changes
+
+- Updated dependencies [0d3d83e]
+  - simple-daisy-vue@2.0.0
+
 ## 1.6.0
 
 ### Minor Changes

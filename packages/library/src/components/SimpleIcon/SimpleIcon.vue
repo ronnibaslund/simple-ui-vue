@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Icon } from '@iconify/vue'
 import { iconSizes, icons } from '@/globals'
 import type { IconSizes } from '@/globals'
 
@@ -51,15 +52,11 @@ const iconSizeClass = computed(() => {
   } as Record<number, string>)[props.size] || `size-${props.size}`
 })
 
-const iconMapping = Object.fromEntries(
-  icons.map(icon => [icon, `lucide--${icon}`])
-)
-
-const iconClass = computed(() => {
-  return iconMapping[props.icon]
+const iconName = computed(() => {
+  return `lucide:${props.icon}`
 })
 </script>
 
 <template>
-  <span class="iconify text-base-content/60" :class="[`${iconSizeClass}`, `${iconClass}`]"></span>
+  <Icon :icon="iconName" :class="iconSizeClass" class="text-base-content/60" />
 </template>

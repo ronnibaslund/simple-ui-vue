@@ -46,6 +46,7 @@ export default defineConfig({
           { text: 'Steps', link: '/components/steps' },
           { text: 'Toggle', link: '/components/toggle' },
           { text: 'Input', link: '/components/input' },
+          { text: 'Icon', link: '/components/icon' },
           // do not remove - used by hygen
         ]
       }

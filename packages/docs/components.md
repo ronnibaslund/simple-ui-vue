@@ -15,4 +15,5 @@
 - [Steps](/components/steps)
 - [Toggle](/components/toggle)
 - [Input](/components/input)
+- [Icon](/components/icon)
 <!--do not remove - used by hygen-->

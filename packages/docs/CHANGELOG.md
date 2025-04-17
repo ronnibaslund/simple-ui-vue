@@ -1,5 +1,16 @@
 # docs
 
+## 1.6.0
+
+### Minor Changes
+
+- c7b4e72: update input and icon
+
+### Patch Changes
+
+- Updated dependencies [c7b4e72]
+  - simple-daisy-vue@1.7.0
+
 ## 1.5.0
 
 ### Minor Changes

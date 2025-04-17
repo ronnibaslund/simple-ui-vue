@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 1.7.0
+
+### Minor Changes
+
+- c7b4e72: update input and icon
+
 ## 1.6.0
 
 ### Minor Changes

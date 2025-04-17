@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Sizes, ColorsBrand, ColorsState } from '../../globals'
+import type { Sizes, ColorsBrand, ColorsState, IconSizes } from '../../globals'
+import { icons } from '../../globals'
+import SimpleIcon from '../SimpleIcon/SimpleIcon.vue'
+
+type IconNames = (typeof icons)[number]
 
 const props = withDefaults(
   defineProps<{
@@ -13,8 +17,8 @@ const props = withDefaults(
     fieldset?: boolean
     fieldsetLegend?: string
     fieldsetLabel?: string
-    icon?: string
-    iconSize?: number
+    icon?: IconNames
+    iconSize?: IconSizes
   }>(),
   {
     type: 'text',
@@ -82,14 +86,17 @@ const type = computed(() => {
 
 const iconClasses = computed(() => {
   const size = props.iconSize ? `size-${props.iconSize}` : 'size-6'
-  return `${size} ${props.icon}` 
+  return `${size} ${props.icon}`
 })
 </script>
 
 <template>
-  
   <label :class="[colorClasses, sizeClasses, 'input']" v-if="!fieldset">
-    <span class="iconify text-base-content/60" :class="iconClasses"></span>
+    <SimpleIcon
+      v-if="icon"
+      :icon="icon"
+      :size="props.iconSize"
+    />
     <input
       v-model="inputValue"
       :type="type"
@@ -101,7 +108,11 @@ const iconClasses = computed(() => {
   <fieldset class="fieldset" v-if="fieldset">
     <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}</legend>
     <label :class="[colorClasses, sizeClasses, 'input']">
-      <span class="iconify text-base-content/60" :class="iconClasses"></span>
+      <SimpleIcon
+        v-if="icon"
+        :icon="icon"
+        :size="props.iconSize"
+      />
       <input
         v-model="inputValue"
         :type="type"

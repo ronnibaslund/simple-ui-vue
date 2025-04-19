@@ -10,46 +10,59 @@ const props = withDefaults(
   defineProps<{
     icon: IconNames
     size?: IconSizes
+    customSizeClass?: string
   }>(),
   {
     icon: 'user',
-    size: 6,
+    size: 2,
+    customSizeClass: undefined
   }
 )
 
-const iconSizeClass = computed(() => {
+const iconSize = computed(() => {
+  if (props.customSizeClass) {
+    // If customSizeClass is a number string like "24", parse it
+    const numericSize = parseInt(props.customSizeClass);
+    if (!isNaN(numericSize)) {
+      return numericSize;
+    }
+    // Otherwise try to extract number from Tailwind class like 'h-24'
+    const match = props.customSizeClass.match(/h-(\d+)/);
+    return match ? parseInt(match[1]) : 24; // default to 24 if no match
+  }
+  
   return ({
-    1: 'size-1',
-    2: 'size-2',
-    3: 'size-3',
-    4: 'size-4',
-    5: 'size-5',
-    6: 'size-6',
-    7: 'size-7',
-    8: 'size-8',
-    9: 'size-9',
-    10: 'size-10',
-    11: 'size-11',
-    12: 'size-12',
-    14: 'size-14',
-    16: 'size-16',
-    18: 'size-18',
-    20: 'size-20',
-    24: 'size-24',
-    28: 'size-28',
-    32: 'size-32',
-    36: 'size-36',
-    40: 'size-40',
-    44: 'size-44',
-    48: 'size-48',
-    52: 'size-52',
-    56: 'size-56',
-    60: 'size-60',
-    64: 'size-64',
-    72: 'size-72',
-    80: 'size-80',
-    96: 'size-96'
-  } as Record<number, string>)[props.size] || `size-${props.size}`
+    1: 16, // 4 * 4
+    2: 20, // 5 * 4
+    3: 24, // 6 * 4
+    4: 28, // 7 * 4
+    5: 32, // 8 * 4
+    6: 36, // 9 * 4
+    7: 40, // 10 * 4
+    8: 44, // 11 * 4
+    9: 48, // 12 * 4
+    10: 56, // 14 * 4
+    11: 64, // 16 * 4
+    12: 80, // 20 * 4
+    14: 96, // 24 * 4
+    16: 112, // 28 * 4
+    18: 128, // 32 * 4
+    20: 144, // 36 * 4
+    24: 160, // 40 * 4
+    28: 176, // 44 * 4
+    32: 192, // 48 * 4
+    36: 208, // 52 * 4
+    40: 224, // 56 * 4
+    44: 240, // 60 * 4
+    48: 256, // 64 * 4
+    52: 288, // 72 * 4
+    56: 320, // 80 * 4
+    60: 384, // 96 * 4
+    64: 448, // 28rem * 16
+    72: 512, // 32rem * 16
+    80: 576, // 36rem * 16
+    96: 640  // 40rem * 16
+  } as Record<number, number>)[props.size] || props.size * 4
 })
 
 const iconName = computed(() => {
@@ -58,5 +71,27 @@ const iconName = computed(() => {
 </script>
 
 <template>
-  <Icon :icon="iconName" :class="iconSizeClass" class="text-base-content/60" />
+  <Icon 
+    :icon="iconName" 
+    :width="iconSize"
+    :height="iconSize"
+    class="inline-block align-middle text-current" 
+  />
 </template>
+
+<style scoped>
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+.iconify {
+  display: inline-block;
+  vertical-align: middle;
+  background: transparent !important;
+  background-color: transparent !important;
+  width: auto;
+  height: auto;
+}
+</style>

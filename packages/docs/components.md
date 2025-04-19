@@ -16,4 +16,5 @@
 - [Toggle](/components/toggle)
 - [Input](/components/input)
 - [Icon](/components/icon)
+- [Modal](/components/modal)
 <!--do not remove - used by hygen-->

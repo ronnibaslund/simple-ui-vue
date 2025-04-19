@@ -16,6 +16,7 @@ const props = withDefaults(
     glass?: boolean
     active?: boolean
     dashed?: boolean
+    type?: 'button' | 'submit' | 'reset'
   }>(),
   {
     size: 'md',
@@ -60,7 +61,11 @@ const otherClasses = computed(() => {
 })
 </script>
 <template>
-  <button class="btn" :class="[colorClasses, sizeClasses, otherClasses]">
+  <button 
+    class="btn" 
+    :class="[colorClasses, sizeClasses, otherClasses]"
+    :type="type"
+  >
     <SimpleLoading v-if="loading" :size="size" />
     <slot></slot>
   </button>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { Sizes, ColorsBrand, ColorsState, IconSizes } from '../../globals'
 import { icons } from '../../globals'
 import SimpleIcon from '../SimpleIcon/SimpleIcon.vue'
@@ -30,6 +30,9 @@ const props = withDefaults(
 const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
+
+// Track password visibility state
+const passwordVisible = ref(false)
 
 const inputValue = computed({
   get: () => props.modelValue,
@@ -72,7 +75,7 @@ const sizeClasses = computed(() => {
 })
 
 const type = computed(() => {
-  return {
+  const baseType = {
     text: 'text',
     email: 'email',
     password: 'password',
@@ -82,32 +85,30 @@ const type = computed(() => {
     url: 'url',
     tel: 'tel'
   }[props.type]
+  
+  // Override type when password is visible
+  if (baseType === 'password' && passwordVisible.value) {
+    return 'text'
+  }
+  
+  return baseType
 })
+
+const isPassword = computed(() => props.type === 'password')
 
 const iconClasses = computed(() => {
   const size = props.iconSize ? `size-${props.iconSize}` : 'size-6'
   return `${size} ${props.icon}`
 })
+
+const togglePasswordVisibility = () => {
+  passwordVisible.value = !passwordVisible.value
+}
 </script>
 
 <template>
-  <label :class="[colorClasses, sizeClasses, 'input']" v-if="!fieldset">
-    <SimpleIcon
-      v-if="icon"
-      :icon="icon"
-      :size="props.iconSize"
-    />
-    <input
-      v-model="inputValue"
-      :type="type"
-      :placeholder="inputPlaceholder"
-      :disabled="inputDisabled"
-    />
-  </label>
-
-  <fieldset class="fieldset" v-if="fieldset">
-    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}</legend>
-    <label :class="[colorClasses, sizeClasses, 'input']">
+  <div class="relative" v-if="!fieldset">
+    <label :class="[colorClasses, sizeClasses, 'input w-full']">
       <SimpleIcon
         v-if="icon"
         :icon="icon"
@@ -118,7 +119,48 @@ const iconClasses = computed(() => {
         :type="type"
         :placeholder="inputPlaceholder"
         :disabled="inputDisabled"
+        class="grow focus:outline-0"
       />
+      
+      <!-- Password visibility toggle using swap -->
+      <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
+        <input 
+          type="checkbox" 
+          aria-label="Toggle password visibility" 
+          v-model="passwordVisible"
+        />
+        <SimpleIcon class="swap-off" icon="eye" :size="2" />
+        <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+      </label>
+    </label>
+  </div>
+
+  <fieldset class="fieldset" v-if="fieldset">
+    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}</legend>
+    <label :class="[colorClasses, sizeClasses, 'input w-full']">
+      <SimpleIcon
+        v-if="icon"
+        :icon="icon"
+        :size="props.iconSize"
+      />
+      <input
+        v-model="inputValue"
+        :type="type"
+        :placeholder="inputPlaceholder"
+        :disabled="inputDisabled"
+        class="grow focus:outline-0"
+      />
+      
+      <!-- Password visibility toggle using swap -->
+      <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
+        <input 
+          type="checkbox" 
+          aria-label="Toggle password visibility" 
+          v-model="passwordVisible"
+        />
+        <SimpleIcon class="swap-off" icon="eye" :size="2" />
+        <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+      </label>
     </label>
     <p class="fieldset-label" v-if="fieldsetLabel">{{ fieldsetLabel }}</p>
   </fieldset>

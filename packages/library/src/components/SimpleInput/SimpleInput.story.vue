@@ -10,10 +10,12 @@ const state = reactive<{
   value: string
   icon: IconNames
   size: IconSizes
+  password: string
 }>({
   value: '',
   icon: 'search',
-  size: 6
+  size: 6,
+  password: ''
 })
 </script>
 
@@ -27,6 +29,21 @@ const state = reactive<{
     <!-- With Icon -->
     <Variant title="With Icon">
       <SimpleInput v-model="state.value" :icon="state.icon" placeholder="Search..." />
+    </Variant>
+
+    <!-- Password with Toggle -->
+    <Variant 
+      title="Password with Visibility Toggle" 
+      description="Password input with an eye icon to toggle visibility"
+    >
+      <div class="flex flex-col gap-2">
+        <SimpleInput
+          v-model="state.password"
+          type="password"
+          placeholder="Enter your password"
+        />
+        <p class="text-xs text-gray-500 mt-1">Click the eye icon to toggle password visibility</p>
+      </div>
     </Variant>
 
     <!-- Sizes -->
@@ -78,6 +95,18 @@ const state = reactive<{
       />
     </Variant>
 
+    <!-- Fieldset with Password -->
+    <Variant title="Fieldset with Password">
+      <SimpleInput 
+        v-model="state.password" 
+        fieldset 
+        fieldsetLegend="Security Information" 
+        fieldsetLabel="Password must be at least 8 characters long"
+        type="password"
+        placeholder="Enter secure password"
+      />
+    </Variant>
+
     <!-- Disabled -->
     <Variant title="Disabled">
       <SimpleInput 
@@ -89,6 +118,7 @@ const state = reactive<{
 
     <template #controls>
       <HstText v-model="state.value" title="Value" />
+      <HstText v-model="state.password" title="Password" />
       <HstSelect v-model="state.icon" :options="icons" title="Icon" />
       <HstSelect v-model="state.size" :options="iconSizes" title="Icon Size" />
     </template>
@@ -105,6 +135,7 @@ A versatile input component that supports various types, sizes, colors, and feat
 - Various sizes (xs, sm, md, lg)
 - Color variants (primary, secondary, accent, etc.)
 - Optional icon support
+- Password visibility toggle
 - Fieldset wrapper with legend and helper text
 - Disabled state
 
@@ -140,6 +171,11 @@ A versatile input component that supports various types, sizes, colors, and feat
 ### With Icon
 ```vue
 <SimpleInput v-model="value" icon="search" placeholder="Search..." />
+```
+
+### Password with Visibility Toggle
+```vue
+<SimpleInput v-model="password" type="password" placeholder="Enter your password" />
 ```
 
 ### With Fieldset

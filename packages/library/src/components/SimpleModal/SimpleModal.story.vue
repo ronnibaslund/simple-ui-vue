@@ -9,10 +9,12 @@ const customModalRef = ref(null)
 const slotModalRef = ref(null)
 const iconModalRef = ref(null)
 const colorButtonsModalRef = ref(null)
+const submitFormModalRef = ref(null)
 
 // State to track events
 const eventState = reactive({
-  lastEvent: null
+  lastEvent: null,
+  formSubmitted: false
 })
 
 const showBasicModal = () => {
@@ -35,6 +37,12 @@ const showColorButtonsModal = () => {
   colorButtonsModalRef.value?.showModal()
 }
 
+const showSubmitFormModal = () => {
+  submitFormModalRef.value?.showModal()
+  // Reset form submission state
+  eventState.formSubmitted = false
+}
+
 /**
  * Handle create button click
  * Updates event state for display
@@ -51,6 +59,15 @@ const handleCreate = () => {
 const handleCancel = () => {
   console.log('Cancel button clicked')
   eventState.lastEvent = { type: 'cancel', time: new Date().toISOString() }
+}
+
+/**
+ * Handle form submission
+ */
+const handleFormSubmit = (e) => {
+  e.preventDefault() // Prevent actual form submission
+  eventState.formSubmitted = true
+  console.log('Form submitted')
 }
 </script>
 
@@ -96,6 +113,65 @@ const handleCancel = () => {
           <p>This modal has custom buttons with event handlers.</p>
           <p class="mt-2 text-sm text-info">Last event: {{ eventState.lastEvent ? JSON.stringify(eventState.lastEvent) : 'None' }}</p>
         </div>
+      </SimpleModal>
+    </Variant>
+
+    <Variant 
+      title="Modal with Form Submit Button" 
+      description="Modal with a form that uses a submit type button."
+    >
+      <SimpleButton color="primary" @click="showSubmitFormModal">Open Form Modal</SimpleButton>
+      <SimpleModal 
+        ref="submitFormModalRef" 
+        title="Form Modal"
+        :showCancelButton="true"
+        :showCreateButton="true"
+        cancelButtonText="Cancel"
+        createButtonText="Submit Form"
+        createButtonType="submit"
+      >
+        <form @submit="handleFormSubmit">
+          <div class="flex flex-col gap-4">
+            <p>This modal demonstrates a form with a submit button.</p>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Name</span>
+              </label>
+              <input type="text" placeholder="Your name" class="input input-bordered" required />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email</span>
+              </label>
+              <input type="email" placeholder="email@example.com" class="input input-bordered" required />
+            </div>
+            
+            <p v-if="eventState.formSubmitted" class="text-success">
+              Form submitted successfully!
+            </p>
+          </div>
+          
+          <!-- Custom action buttons with form submission -->
+          <template #actions>
+            <SimpleButton 
+              color="neutral" 
+              class="mr-2"
+              type="button" 
+              @click="() => { 
+                handleCancel();
+                submitFormModalRef.showModal(); 
+              }"
+            >
+              Cancel
+            </SimpleButton>
+            <SimpleButton 
+              color="success" 
+              type="submit"
+            >
+              Submit
+            </SimpleButton>
+          </template>
+        </form>
       </SimpleModal>
     </Variant>
 

@@ -10,6 +10,7 @@ import type { ColorsBrand, ColorsState } from '@/globals'
 import { icons } from '@/globals'
 type IconNames = typeof icons[number]
 type ButtonColor = ColorsBrand | ColorsState | 'ghost' | 'link'
+type ButtonType = 'button' | 'submit' | 'reset'
 
 const props = defineProps<{
   id?: string,
@@ -22,7 +23,9 @@ const props = defineProps<{
   createButtonText?: string,
   cancelButtonColor?: string,
   createButtonColor?: string,
-  closeOnClickOutside?: boolean
+  closeOnClickOutside?: boolean,
+  cancelButtonType?: ButtonType,
+  createButtonType?: ButtonType
 }>()
 
 const emit = defineEmits(['cancel', 'create'])
@@ -120,6 +123,7 @@ defineExpose({
             <SimpleButton 
               v-if="showCancelButton" 
               :color="getCancelButtonColor"
+              :type="cancelButtonType"
               class="mr-2"
               @click="handleCancel"
             >
@@ -128,6 +132,7 @@ defineExpose({
             <SimpleButton 
               v-if="showCreateButton" 
               :color="getCreateButtonColor"
+              :type="createButtonType"
               @click="handleCreate"
             >
               {{ createButtonText || 'Create' }}

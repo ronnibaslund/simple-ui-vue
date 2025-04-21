@@ -17,6 +17,7 @@ import SimpleToggle from './SimpleToggle/SimpleToggle.vue'
 import SimpleInput from './SimpleInput/SimpleInput.vue'
 import SimpleIcon from './SimpleIcon/SimpleIcon.vue'
 import SimpleModal from './SimpleModal/SimpleModal.vue'
+import SimpleSelect from './SimpleSelect/SimpleSelect.vue'
 // import - do not remove this line, used for hygen generations
 
 // ignore removal of traling comma by pretter so hygen can add new imports
@@ -41,5 +42,6 @@ export {
   SimpleInput,
   SimpleIcon,
   SimpleModal,
+  SimpleSelect,
   // export - do not remove this line, used for hygen generations
 }

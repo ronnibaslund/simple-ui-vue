@@ -49,6 +49,7 @@ export default defineConfig({
           { text: 'Icon', link: '/components/icon' },
           { text: 'Modal', link: '/components/modal' },
           { text: 'Form', link: '/components/form' },
+          { text: 'Select', link: '/components/select' },
           // do not remove - used by hygen
         ]
       }

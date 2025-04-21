@@ -18,4 +18,5 @@
 - [Icon](/components/icon)
 - [Modal](/components/modal)
 - [Form](/components/form)
+- [Select](/components/select)
 <!--do not remove - used by hygen-->

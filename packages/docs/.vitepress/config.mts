@@ -50,6 +50,7 @@ export default defineConfig({
           { text: 'Modal', link: '/components/modal' },
           { text: 'Form', link: '/components/form' },
           { text: 'Select', link: '/components/select' },
+          { text: 'Textarea', link: '/components/textarea' },
           // do not remove - used by hygen
         ]
       }

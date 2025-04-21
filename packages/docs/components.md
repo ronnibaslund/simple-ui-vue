@@ -19,4 +19,5 @@
 - [Modal](/components/modal)
 - [Form](/components/form)
 - [Select](/components/select)
+- [Textarea](/components/textarea)
 <!--do not remove - used by hygen-->

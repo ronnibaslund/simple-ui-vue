@@ -51,6 +51,8 @@ export default defineConfig({
           { text: 'Form', link: '/components/form' },
           { text: 'Select', link: '/components/select' },
           { text: 'Textarea', link: '/components/textarea' },
+          { text: 'Progress', link: '/components/progress' },
+          { text: 'Range', link: '/components/range' },
           // do not remove - used by hygen
         ]
       }

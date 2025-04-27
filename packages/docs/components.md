@@ -20,4 +20,6 @@
 - [Form](/components/form)
 - [Select](/components/select)
 - [Textarea](/components/textarea)
+- [Progress](/components/progress)
+- [Range](/components/range)
 <!--do not remove - used by hygen-->

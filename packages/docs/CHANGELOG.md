@@ -1,5 +1,12 @@
 # docs
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [d39b67e]
+  - simple-daisy-vue@2.2.0
+
 ## 2.1.0
 
 ### Minor Changes

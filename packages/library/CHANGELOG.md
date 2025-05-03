@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.2.0
+
+### Minor Changes
+
+- d39b67e: Fixed type errors
+
 ## 2.1.0
 
 ### Minor Changes

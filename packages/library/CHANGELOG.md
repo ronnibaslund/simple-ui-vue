@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.5.0
+
+### Minor Changes
+
+- b36883f: bugs
+
 ## 2.4.0
 
 ### Minor Changes

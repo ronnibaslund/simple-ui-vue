@@ -16,12 +16,24 @@ export function initThemeSwitcher() {
     }
 
     function setTheme() {
+      // Check for dark mode from VitePress
       const isDark = targetNode.classList.contains('dark')
+      
+      // Set the appropriate DaisyUI theme
       if (isDark) {
         targetNode.setAttribute('data-theme', 'dark')
+        
+        // Force refresh DaisyUI CSS variables
+        document.documentElement.style.colorScheme = 'dark'
       } else {
         targetNode.setAttribute('data-theme', 'light')
+        
+        // Force refresh DaisyUI CSS variables
+        document.documentElement.style.colorScheme = 'light'
       }
+      
+      // Add a class to help with debugging
+      targetNode.classList.toggle('theme-initialized', true)
     }
 
     // Create an observer instance linked to the callback function
@@ -29,5 +41,11 @@ export function initThemeSwitcher() {
 
     // Start observing the target node for configured mutations
     observer.observe(targetNode, config)
+    
+    // Also handle theme changes based on system preference changes
+    if (window.matchMedia) {
+      const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      colorSchemeQuery.addEventListener('change', setTheme)
+    }
   }
 }

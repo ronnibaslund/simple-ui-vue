@@ -12,12 +12,18 @@ interface AccordionData {
   id: string;
   activeIds: string[];
   multipleOpen?: boolean;
+  groupName: string;
 }
 
+// Generate a unique ID for this accordion group
+const accordionId = nanoid()
+const groupName = `accordion-${accordionId}`
+
 const accordionData = ref<AccordionData>({
-  id: nanoid(),
+  id: accordionId,
   activeIds: [],
-  multipleOpen: props.multipleOpen
+  multipleOpen: props.multipleOpen,
+  groupName
 })
 
 watch(

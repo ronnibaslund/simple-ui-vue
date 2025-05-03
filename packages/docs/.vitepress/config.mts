@@ -12,7 +12,6 @@ export default defineConfig({
       { text: 'Components', link: '/components' },
       { text: 'Stories', link: 'https://daisy-vue-stories.netlify.app/' }
     ],
-
     sidebar: [
       {
         text: 'Docs',
@@ -58,11 +57,14 @@ export default defineConfig({
       }
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
-  }
+    socialLinks: [{ icon: 'github', link: 'https://github.com/ronnibaslund/simple-ui-vue' }]
+  },
   // markdown: {
   //   config: (md) => {
   //     md.use(VueReplMdPlugin)
   //   }
   // }
+  head: [
+    //['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css' }],
+  ]
 })

@@ -1,14 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-// import daisyui from 'daisyui'
+const daisyui = require('daisyui');
 
-export default {
+module.exports = {
   content: [
     './**/*.md', 
-    ".vitepress/theme/*.{js,ts,vue}",
+    '.vitepress/theme/*.{js,ts,vue}',
     './node_modules/simple-daisy-vue/src/{components,directives}/**/*.{vue,ts}'
   ],
   theme: {
     extend: {}
   },
-  // plugins: [daisyui]
+  plugins: [daisyui],
+  daisyui: {
+    themes: true,
+  }
 }

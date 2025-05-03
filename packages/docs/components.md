@@ -1,25 +1,38 @@
 # Components
 
-- [Loading](/components/loading)
-- [Badge](/components/badge)
-- [Tabs](/components/tabs)
-- [Button](/components/button)
-- [BrowserMockup](/components/browsermockup)
+## Layout Components
 - [Accordion](/components/accordion)
-- [Avatar](/components/avatar)
-- [AvatarGroup](/components/avatargroup)
-- [ContextMenu](/components/contextmenu)
-- [Alert](/components/alert)
-- [DataTable](/components/datatable)
-- [Rating](/components/rating)
-- [Steps](/components/steps)
-- [Toggle](/components/toggle)
-- [Input](/components/input)
-- [Icon](/components/icon)
+- [AccordionPanel](/components/accordionpanel)
+- [BrowserMockup](/components/browsermockup)
 - [Modal](/components/modal)
-- [Form](/components/form)
+- [Tabs](/components/tabs)
+- [Steps](/components/steps)
+
+## Form Components
+- [Button](/components/button)
+- [Input](/components/input)
 - [Select](/components/select)
 - [Textarea](/components/textarea)
-- [Progress](/components/progress)
+- [Toggle](/components/toggle)
 - [Range](/components/range)
+- [Form](/components/form)
+
+## Data Display Components
+- [DataTable](/components/datatable)
+- [Progress](/components/progress)
+- [Rating](/components/rating)
+
+## Feedback Components
+- [Alert](/components/alert)
+- [Loading](/components/loading)
+- [Badge](/components/badge)
+
+## Media Components
+- [Avatar](/components/avatar)
+- [AvatarGroup](/components/avatargroup)
+- [Icon](/components/icon)
+
+## Interactive Components
+- [ContextMenu](/components/contextmenu)
+
 <!--do not remove - used by hygen-->

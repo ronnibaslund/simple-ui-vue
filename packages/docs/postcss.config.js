@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-export default {
+module.exports = {
   plugins: {
     '@tailwindcss/postcss': {},
     autoprefixer: {},

@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.4.0
+
+### Minor Changes
+
+- 8a03c3d: fixes
+
 ## 2.3.0
 
 ### Minor Changes

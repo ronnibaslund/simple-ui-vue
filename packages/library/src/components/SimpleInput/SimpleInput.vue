@@ -352,7 +352,7 @@ const handleInput = (event: Event) => {
     </div>
   </div>
 
-  <fieldset class="fieldset" v-if="fieldset">
+  <fieldset class="fieldset mb-0" v-if="fieldset">
     <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
     <label :class="[colorClasses, sizeClasses, 'input w-full', { 'input-error': errorMessage }]">
       <SimpleIcon

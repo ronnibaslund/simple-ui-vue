@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.1.0
+
+### Minor Changes
+
+- 558a7e1: Added new components
+
 ## 2.0.0
 
 ### Major Changes

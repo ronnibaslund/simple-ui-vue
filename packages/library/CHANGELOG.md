@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.6.0
+
+### Minor Changes
+
+- 8792d7f: bugs
+
 ## 2.5.0
 
 ### Minor Changes

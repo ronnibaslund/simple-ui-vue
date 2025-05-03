@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.3.0
+
+### Minor Changes
+
+- 6c905c6: updated type errors
+
 ## 2.2.0
 
 ### Minor Changes

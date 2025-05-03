@@ -16,8 +16,6 @@ const props = withDefaults(
   }
 )
 
-console.log(props.mask)
-
 // Size
 const defaultSize = computed(() => props.size)
 const _size = inject('SimpleAvatarSize', defaultSize)
@@ -57,12 +55,10 @@ const errorLoadingImage = ref(false)
 </script>
 
 <template>
-  <div class="avatar avatar-placeholder" :class="classes" v-mask="_mask">
-    <div
-      v-if="(!src && placeholder) || (errorLoadingImage && placeholder)"
-    >
-      <span :class="textSizeClasses">{{ placeholder }}</span>
-    </div>
+  <div class="avatar avatar-placeholder flex items-center justify-center" :class="classes" v-mask="_mask">
+    <template v-if="(!src && placeholder) || (errorLoadingImage && placeholder)">
+      <span :class="textSizeClasses" class="flex items-center justify-center">{{ placeholder }}</span>
+    </template>
     <img v-else :src="src" @error="errorLoadingImage = true" />
   </div>
 </template>

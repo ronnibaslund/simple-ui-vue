@@ -12,7 +12,6 @@ export default defineConfig({
       { text: 'Components', link: '/components' },
       { text: 'Stories', link: 'https://daisy-vue-stories.netlify.app/' }
     ],
-
     sidebar: [
       {
         text: 'Docs',
@@ -44,16 +43,28 @@ export default defineConfig({
           { text: 'DataTable', link: '/components/datatable' },
           { text: 'Rating', link: '/components/rating' },
           { text: 'Steps', link: '/components/steps' },
+          { text: 'Toggle', link: '/components/toggle' },
+          { text: 'Input', link: '/components/input' },
+          { text: 'Icon', link: '/components/icon' },
+          { text: 'Modal', link: '/components/modal' },
+          { text: 'Form', link: '/components/form' },
+          { text: 'Select', link: '/components/select' },
+          { text: 'Textarea', link: '/components/textarea' },
+          { text: 'Progress', link: '/components/progress' },
+          { text: 'Range', link: '/components/range' },
           // do not remove - used by hygen
         ]
       }
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
-  }
+    socialLinks: [{ icon: 'github', link: 'https://github.com/ronnibaslund/simple-ui-vue' }]
+  },
   // markdown: {
   //   config: (md) => {
   //     md.use(VueReplMdPlugin)
   //   }
   // }
+  head: [
+    //['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css' }],
+  ]
 })

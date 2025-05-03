@@ -6,7 +6,7 @@ import {SimpleLoading} from 'simple-daisy-vue'
 
 ## Without any props
 
-<SimpleLoading/>
+<SimpleLoading />
 
 ```vue
 <SimpleLoading />

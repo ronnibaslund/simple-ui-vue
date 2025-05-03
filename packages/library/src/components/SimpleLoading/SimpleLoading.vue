@@ -16,10 +16,12 @@ const props = withDefaults(
 )
 
 const typeClass = computed(() => {
+  if (!props.type) return 'loading-spinner';
   return {
     spinner: 'loading-spinner',
     dots: 'loading-dots',
     ring: 'loading-ring',
+    'ring-3': 'loading-ring',
     ball: 'loading-ball',
     bars: 'loading-bars',
     infinity: 'loading-infinity'
@@ -27,6 +29,7 @@ const typeClass = computed(() => {
 })
 
 const sizeClass = computed(() => {
+  if (!props.size) return 'loading-md';
   return {
     xs: 'loading-xs',
     sm: 'loading-sm',
@@ -36,12 +39,12 @@ const sizeClass = computed(() => {
 })
 
 const colorClass = computed(() => {
+  if (!props.color) return '';
   return {
     primary: 'text-primary',
     secondary: 'text-secondary',
     accent: 'text-accent',
     neutral: 'text-neutral',
-
     success: 'text-success',
     error: 'text-error',
     warning: 'text-warning',

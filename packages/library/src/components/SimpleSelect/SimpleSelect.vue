@@ -1,0 +1,341 @@
+<script setup lang="ts">
+import { computed, ref, inject, onMounted } from 'vue'
+import type { Sizes, ColorsBrand, ColorsState } from '../../globals'
+import type { ValidationRule } from '../../utils/ValidationRules'
+import SimpleIcon from '../SimpleIcon/SimpleIcon.vue'
+
+type ValidationRules = ValidationRule | ValidationRule[] | null
+
+// Define the FormContext interface based on usage
+interface FormContext {
+  values: Record<string, any>;
+  errors: Record<string, string | null>;
+  touched: Record<string, boolean>;
+  setFieldValue: (name: string, value: any) => void;
+  setFieldError: (name: string, error: string | null) => void;
+  setFieldTouched: (name: string, touched: boolean) => void;
+  formState: { value: { disabled: boolean } };
+}
+
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string | number | null
+    name?: string
+    options?: { value: string | number, label: string, disabled?: boolean }[]
+    placeholder?: string
+    color?: ColorsBrand | ColorsState
+    size?: Sizes
+    disabled?: boolean
+    ghost?: boolean
+    fieldset?: boolean
+    fieldsetLegend?: string
+    fieldsetLabel?: string
+    error?: string
+    required?: boolean
+    validation?: ValidationRules
+    validationMessages?: Record<string, string>
+  }>(),
+  {
+    size: 'md',
+    disabled: false,
+    ghost: false,
+    required: false,
+    options: () => []
+  }
+)
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string | number | null]
+  'blur': [event: FocusEvent]
+  'focus': [event: FocusEvent]
+  'change': [event: Event]
+}>()
+
+const localError = ref<string | null>(null)
+
+// Try to inject form context from SimpleForm if available
+const formContext = inject<FormContext | null>('formContext', null)
+
+// Initialize with form context if available
+onMounted(() => {
+  if (formContext && props.name) {
+    // Register initial value with form if present
+    if (props.modelValue !== undefined) {
+      formContext.setFieldValue(props.name, props.modelValue)
+    }
+    
+    // Set error if provided directly through props
+    if (props.error) {
+      formContext.setFieldError(props.name, props.error)
+    }
+  }
+})
+
+const selectValue = computed({
+  get: () => {
+    // Try to get value from form context first if available
+    if (formContext && props.name && formContext.values[props.name] !== undefined) {
+      return formContext.values[props.name]
+    }
+    // Fallback to prop value
+    return props.modelValue
+  },
+  set: (value) => {
+    emit('update:modelValue', value)
+    
+    // Update form context if available
+    if (formContext && props.name) {
+      formContext.setFieldValue(props.name, value)
+    }
+
+    // Run validation if we have validation rules
+    if (props.validation || props.required) {
+      validateSelect(value)
+    }
+  }
+})
+
+const selectDisabled = computed(() => {
+  return props.disabled || (formContext?.formState.value?.disabled || false)
+})
+
+const colorClasses = computed(() => {
+  if (!props.color) return ''
+  
+  const colorMap = {
+    neutral: 'select-neutral',
+    primary: 'select-primary',
+    secondary: 'select-secondary',
+    accent: 'select-accent',
+    info: 'select-info',
+    success: 'select-success',
+    warning: 'select-warning',
+    error: 'select-error',
+    ghost: 'select-ghost',
+    link: 'select-link'
+  };
+  
+  return colorMap[props.color] || '';
+})
+
+const sizeClasses = computed(() => {
+  if (!props.size) return 'select-md';
+  
+  const sizeMap = {
+    xs: 'select-xs',
+    sm: 'select-sm',
+    md: 'select-md',
+    lg: 'select-lg'
+  };
+  
+  return sizeMap[props.size] || 'select-md';
+})
+
+const ghostClass = computed(() => {
+  return props.ghost ? 'select-ghost' : ''
+})
+
+const requiredIndicator = computed(() => {
+  return props.required ? ' *' : ''
+})
+
+const errorMessage = computed(() => {
+  // Use directly provided error prop first
+  if (props.error) return props.error
+  
+  // Then use local validation error
+  if (localError.value) return localError.value
+  
+  // Then try to get error from form context
+  if (formContext && props.name) {
+    return formContext.errors[props.name]
+  }
+  
+  return null
+})
+
+// Get validation message based on rule name
+const getValidationMessage = (ruleName: string, defaultMessage: string): string => {
+  if (props.validationMessages && props.validationMessages[ruleName]) {
+    return props.validationMessages[ruleName]
+  }
+  return defaultMessage
+}
+
+// Validate the select value
+const validateSelect = (value: any): boolean => {
+  // Reset error state
+  localError.value = null
+  
+  // Required validation
+  if (props.required && (value === null || value === undefined || value === '')) {
+    const message = getValidationMessage('required', 'This field is required')
+    localError.value = message
+    
+    // Update form context if available
+    if (formContext && props.name) {
+      formContext.setFieldError(props.name, message)
+    }
+    
+    return false
+  }
+  
+  // Skip other validations if empty and not required
+  if (value === null || value === undefined || value === '') {
+    // Clear any previous errors
+    if (formContext && props.name) {
+      formContext.setFieldError(props.name, null)
+    }
+    return true
+  }
+  
+  // Custom validation rules
+  if (props.validation) {
+    const rules = Array.isArray(props.validation) 
+      ? props.validation 
+      : [props.validation]
+    
+    // Track if we have validation errors
+    let hasErrors = false
+    
+    for (const rule of rules) {
+      const result = rule(value)
+      
+      if (result === false || typeof result === 'string') {
+        const message = typeof result === 'string' 
+          ? result 
+          : getValidationMessage('invalid', 'This field is invalid')
+        
+        localError.value = message
+        
+        // Update form context if available
+        if (formContext && props.name) {
+          formContext.setFieldError(props.name, message)
+        }
+        
+        hasErrors = true
+        return false
+      }
+    }
+    
+    // If we have validation rules but no errors, we can skip additional validation
+    if (!hasErrors) {
+      // Clear any previous errors in form context
+      if (formContext && props.name) {
+        formContext.setFieldError(props.name, null)
+      }
+      return true
+    }
+  }
+  
+  // Clear any previous errors in form context
+  if (formContext && props.name) {
+    formContext.setFieldError(props.name, null)
+  }
+  
+  return true
+}
+
+const handleBlur = (event: FocusEvent) => {
+  emit('blur', event)
+  
+  // Validate on blur
+  if ((props.required || props.validation) && event.target instanceof HTMLSelectElement) {
+    validateSelect(event.target.value)
+  }
+  
+  // Update form context if available
+  if (formContext && props.name) {
+    formContext.setFieldTouched(props.name, true)
+  }
+}
+
+const handleFocus = (event: FocusEvent) => {
+  emit('focus', event)
+}
+
+const handleChange = (event: Event) => {
+  emit('change', event)
+  
+  // Validate on change if there's already an error
+  if ((props.required || props.validation) && 
+      localError.value && 
+      event.target instanceof HTMLSelectElement) {
+    validateSelect(event.target.value)
+  }
+}
+</script>
+
+<template>
+  <div class="relative" v-if="!fieldset">
+    <select
+      v-model="selectValue"
+      :name="name"
+      :disabled="selectDisabled"
+      :required="required"
+      :class="[
+        'select w-full', 
+        colorClasses, 
+        sizeClasses, 
+        ghostClass, 
+        { 'select-error': errorMessage }
+      ]"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      @change="handleChange"
+    >
+      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+      <option 
+        v-for="option in options" 
+        :key="option.value" 
+        :value="option.value" 
+        :disabled="option.disabled"
+      >
+        {{ option.label }}
+      </option>
+      <slot></slot>
+    </select>
+    
+    <!-- Error message -->
+    <div v-if="errorMessage" class="text-error text-xs mt-1">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <fieldset class="fieldset" v-if="fieldset">
+    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
+    <select
+      v-model="selectValue"
+      :name="name"
+      :disabled="selectDisabled"
+      :required="required"
+      :class="[
+        'select w-full', 
+        colorClasses, 
+        sizeClasses, 
+        ghostClass, 
+        { 'select-error': errorMessage }
+      ]"
+      @blur="handleBlur"
+      @focus="handleFocus"
+      @change="handleChange"
+    >
+      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+      <option 
+        v-for="option in options" 
+        :key="option.value" 
+        :value="option.value" 
+        :disabled="option.disabled"
+      >
+        {{ option.label }}
+      </option>
+      <slot></slot>
+    </select>
+    
+    <!-- Show error message and/or fieldset label -->
+    <div class="mt-1">
+      <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
+      <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
+    </div>
+  </fieldset>
+</template>

@@ -2,21 +2,36 @@
 import { provide, watch, ref } from 'vue'
 import { nanoid } from 'nanoid'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   multipleOpen?: boolean
-}>()
+}>(), {
+  multipleOpen: false
+})
 
-const accordionData = ref({
-  id: nanoid(),
+interface AccordionData {
+  id: string;
+  activeIds: string[];
+  multipleOpen?: boolean;
+  groupName: string;
+}
+
+// Generate a unique ID for this accordion group
+const accordionId = nanoid()
+const groupName = `accordion-${accordionId}`
+
+const accordionData = ref<AccordionData>({
+  id: accordionId,
   activeIds: [],
-  multipleOpen: props.multipleOpen
+  multipleOpen: props.multipleOpen,
+  groupName
 })
 
 watch(
   () => props.multipleOpen,
   () => {
     accordionData.value.multipleOpen = props.multipleOpen
-    accordionData.value.activeIds = [accordionData.value.activeIds.at(0)].filter((n) => n)
+    const firstId = accordionData.value.activeIds.length > 0 ? accordionData.value.activeIds[0] : undefined;
+    accordionData.value.activeIds = firstId ? [firstId] : [];
   }
 )
 

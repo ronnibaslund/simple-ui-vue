@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 module.exports = {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {}
-  }
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  },
 }

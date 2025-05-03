@@ -1,0 +1,72 @@
+# Daisy UI Vue Component Library Rules
+
+## Component Patterns
+
+1. All component names are prefixed with "Simple" (e.g., SimpleButton, SimpleToggle)
+2. Components follow a consistent directory structure:
+   ```
+   ComponentName/
+     ├── ComponentName.vue     # Main component
+     ├── ComponentName.story.vue  # Histoire story
+     └── __tests__/           # Tests directory
+         └── ComponentName.spec.ts
+   ```
+3. Components use `<script setup>` with TypeScript
+4. Props are defined using TypeScript interfaces with withDefaults
+5. CSS classes are composed using computed properties
+
+## Coding Standards
+
+1. Use computed properties for dynamic class generation
+2. Use ref/reactive for component state
+3. Explicit typing for props, emits, and functions
+4. Emit update:modelValue for v-model support
+5. All public methods should have JSDoc comments
+
+## Common Fixes
+
+1. Component errors in Histoire stories often relate to:
+   - Missing props that are used in stories
+   - Incorrect type definitions for props
+   - Using props that don't match globals definitions
+
+2. When working with DaisyUI class handling:
+   - Classes should be computed based on props
+   - Use color mapping objects to transform color props to appropriate classes
+   - Handle size variations consistently
+
+3. For form components:
+   - Always include disabled handling
+   - Ensure v-model works correctly
+   - Include appropriate aria attributes
+
+## Tool Usage
+
+1. Generate new components using Hygen:
+   ```
+   pnpm hygen component new --name ComponentName
+   ```
+
+2. Run component tests:
+   ```
+   pnpm test:unit
+   ```
+
+3. Build the library:
+   ```
+   pnpm build
+   ```
+
+4. View components in Histoire:
+   ```
+   pnpm story:dev
+   ```
+
+## File Patterns
+
+1. Use .vue extension for components
+2. Use .story.vue for Histoire stories
+3. Use .spec.ts for tests
+4. Import types from globals directory
+5. Define constants in appropriate global files
+6. Extend existing patterns when adding new features 

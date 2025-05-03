@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ColorsBrand, ColorsState } from '../..//globals'
+import type { ColorsBrand, ColorsState } from '../../globals'
 const props = withDefaults(
   defineProps<{
     steps: string[]
@@ -15,12 +15,13 @@ const props = withDefaults(
     /**
      * The color of the numbered bubble above the step label
      *
-     * @default 'brand'
+     * @default 'primary'
      */
     color?: ColorsBrand | ColorsState
   }>(),
   {
-    layout: 'horizontal'
+    layout: 'horizontal',
+    color: 'primary'
   }
 )
 
@@ -29,10 +30,13 @@ const activeStep = defineModel<number>({
 })
 
 const colorClass = computed(() => {
+  if (!props.color) return 'step-primary';
+  
   return {
     primary: 'step-primary',
     secondary: 'step-secondary',
     accent: 'step-accent',
+    neutral: 'step-neutral',
     success: 'step-success',
     error: 'step-error',
     warning: 'step-warning',
@@ -41,6 +45,7 @@ const colorClass = computed(() => {
 })
 
 const layoutClass = computed(() => {
+  if (!props.layout) return 'steps-horizontal';
   return {
     horizontal: 'steps-horizontal',
     vertical: 'steps-vertical',

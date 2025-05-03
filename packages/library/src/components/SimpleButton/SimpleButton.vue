@@ -16,6 +16,7 @@ const props = withDefaults(
     glass?: boolean
     active?: boolean
     dashed?: boolean
+    type?: 'button' | 'submit' | 'reset'
   }>(),
   {
     size: 'md',
@@ -25,7 +26,9 @@ const props = withDefaults(
 )
 
 const colorClasses = computed(() => {
-  return {
+  if (!props.color) return '';
+  
+  const colorMap = {
     neutral: 'btn-neutral',
     primary: 'btn-primary',
     secondary: 'btn-secondary',
@@ -36,15 +39,22 @@ const colorClasses = computed(() => {
     info: 'btn-info',
     ghost: 'btn-ghost',
     link: 'btn-link'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 const sizeClasses = computed(() => {
-  return {
+  if (!props.size) return 'btn-md';
+  
+  const sizeMap = {
     lg: 'btn-lg',
+    md: 'btn-md',
     sm: 'btn-sm',
     xs: 'btn-xs'
-  }[props.size]
+  };
+  
+  return sizeMap[props.size] || 'btn-md';
 })
 
 const otherClasses = computed(() => {
@@ -60,7 +70,11 @@ const otherClasses = computed(() => {
 })
 </script>
 <template>
-  <button class="btn" :class="[colorClasses, sizeClasses, otherClasses]">
+  <button 
+    class="btn" 
+    :class="[colorClasses, sizeClasses, otherClasses]"
+    :type="type"
+  >
     <SimpleLoading v-if="loading" :size="size" />
     <slot></slot>
   </button>

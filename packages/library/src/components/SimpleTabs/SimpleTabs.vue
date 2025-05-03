@@ -10,7 +10,7 @@ const props = withDefaults(
   }
 )
 
-const tabs = ref([])
+const tabs = ref<string[]>([])
 function registerTab(label: string) {
   if (tabs.value.includes(label)) return
   tabs.value.push(label)
@@ -18,22 +18,24 @@ function registerTab(label: string) {
 }
 provide('SimpleTabsComponentRegisterTab', registerTab)
 
-const activeTab = defineModel('activeTab')
-const _activeTab = ref(activeTab.value)
+const activeTab = defineModel<string | undefined>('activeTab')
+const _activeTab = ref<string | undefined>(activeTab.value)
 watch(_activeTab, () => (activeTab.value = _activeTab.value))
+
+// set the active tab from the outside
+provide('SimpleTabsComponentRegisterSelectedTab', (name: string) => (_activeTab.value = name))
 
 const tabsData = computed(() => {
   return {
     activeTab: _activeTab.value
-  }
-})
+  }})
 provide('SimpleTabsData', tabsData)
 
 const classes = computed(() => {
   return {
-    bordered: 'tabs-bordered',
-    boxed: 'tabs-boxed',
-    lifted: 'tabs-lifted'
+    bordered: 'tabs-border',
+    boxed: 'tabs-box',
+    lifted: 'tabs-lift'
   }[props.type]
 })
 </script>
@@ -41,31 +43,9 @@ const classes = computed(() => {
 <template>
   <div :data-type="type">
     <div role="tablist" class="tabs" :class="classes">
-      <template v-for="tab in tabs" :key="tab">
-        <button
-          @click="_activeTab = tab"
-          role="tab"
-          class="tab"
-          :aria-label="tab"
-          :class="{ 'tab-active': activeTab === tab }"
-        >
-          {{ tab }}
-        </button>
-      </template>
+      <slot></slot>
     </div>
-    <slot></slot>
   </div>
 </template>
 
-<style scoped>
-[data-type='lifted'] :deep(.tabpanel) {
-  @apply p-6 rounded-t-none bg-base-100 border-base-300 rounded-box;
-}
-[data-type='boxed'] :deep(.tabpanel) {
-  @apply p-6 border-base-300 rounded-box;
-}
-
-[data-type='bordered'] :deep(.tabpanel) {
-  @apply p-6 border-base-300 rounded-box;
-}
-</style>
+<style scoped></style>

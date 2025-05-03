@@ -33,6 +33,8 @@ const classes = computed(() => {
     error: 'alert-error'
   }
 
+  if (!props.type) return 'alert';
+  
   return `alert ${map[props.type]}`
 })
 
@@ -49,13 +51,14 @@ function handleDismiss() {
 }
 
 const icon = computed(() => {
-  if (!props.type) return 'carbon:information'
-  return {
+  if (!props.type) return 'carbon:information';
+  const iconMap = {
     info: 'carbon:information',
     success: 'carbon:checkmark-outline',
     warning: 'carbon:warning',
     error: 'carbon:error'
-  }[props.type]
+  };
+  return iconMap[props.type] || 'carbon:information';
 })
 </script>
 <template>

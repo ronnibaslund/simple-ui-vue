@@ -2,11 +2,19 @@
 import { provide, watch, ref } from 'vue'
 import { nanoid } from 'nanoid'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   multipleOpen?: boolean
-}>()
+}>(), {
+  multipleOpen: false
+})
 
-const accordionData = ref({
+interface AccordionData {
+  id: string;
+  activeIds: string[];
+  multipleOpen?: boolean;
+}
+
+const accordionData = ref<AccordionData>({
   id: nanoid(),
   activeIds: [],
   multipleOpen: props.multipleOpen
@@ -16,7 +24,8 @@ watch(
   () => props.multipleOpen,
   () => {
     accordionData.value.multipleOpen = props.multipleOpen
-    accordionData.value.activeIds = [accordionData.value.activeIds.at(0)].filter((n) => n)
+    const firstId = accordionData.value.activeIds.length > 0 ? accordionData.value.activeIds[0] : undefined;
+    accordionData.value.activeIds = firstId ? [firstId] : [];
   }
 )
 

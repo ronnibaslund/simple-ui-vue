@@ -2,12 +2,11 @@
 import { ref, onMounted, computed } from 'vue'
 import SimpleIcon from '../SimpleIcon/SimpleIcon.vue'
 import SimpleButton from '../SimpleButton/SimpleButton.vue'
-import { iconSizes } from '@/globals'
-import type { IconSizes } from '@/globals'
-import type { ColorsBrand, ColorsState } from '@/globals'
+import type { IconSizes } from '../../globals'
+import type { ColorsBrand, ColorsState } from '../../globals'
 
 // Import icons from globals
-import { icons } from '@/globals'
+import { icons } from '../../globals'
 type IconNames = typeof icons[number]
 type ButtonColor = ColorsBrand | ColorsState | 'ghost' | 'link'
 type ButtonType = 'button' | 'submit' | 'reset'

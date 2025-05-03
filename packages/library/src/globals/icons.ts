@@ -1563,5 +1563,6 @@ export const icons = [
   'zap',
   'zap-off',
   'zoom-in',
-  'zoom-out'
+  'zoom-out',
+  'help-circle',
 ] as const

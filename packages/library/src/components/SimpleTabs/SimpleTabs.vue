@@ -10,7 +10,7 @@ const props = withDefaults(
   }
 )
 
-const tabs = ref([])
+const tabs = ref<string[]>([])
 function registerTab(label: string) {
   if (tabs.value.includes(label)) return
   tabs.value.push(label)
@@ -18,18 +18,17 @@ function registerTab(label: string) {
 }
 provide('SimpleTabsComponentRegisterTab', registerTab)
 
-const activeTab = defineModel('activeTab')
-const _activeTab = ref(activeTab.value)
+const activeTab = defineModel<string | undefined>('activeTab')
+const _activeTab = ref<string | undefined>(activeTab.value)
 watch(_activeTab, () => (activeTab.value = _activeTab.value))
 
 // set the active tab from the outside
-provide('SimpleTabsComponentRegisterSelectedTab', (name) => (_activeTab.value = name))
+provide('SimpleTabsComponentRegisterSelectedTab', (name: string) => (_activeTab.value = name))
 
 const tabsData = computed(() => {
   return {
     activeTab: _activeTab.value
-  }
-})
+  }})
 provide('SimpleTabsData', tabsData)
 
 const classes = computed(() => {

@@ -2,7 +2,7 @@
 import type { DirectiveValueType as Masks } from '../../directives/vMask/VMask'
 import { vMask } from '../../directives/vMask/VMask'
 import { computed } from 'vue'
-import { Sizes } from '../../globals'
+import type { Sizes } from '../../globals'
 const props = withDefaults(
   defineProps<{
     size: Sizes

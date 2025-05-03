@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
-import { Sizes } from '../../globals'
+import type { Sizes } from '../../globals'
 const props = withDefaults(
   defineProps<{
     id?: string

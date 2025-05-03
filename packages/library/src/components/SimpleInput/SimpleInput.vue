@@ -8,9 +8,20 @@ import type { ValidationRule } from '../../utils/ValidationRules'
 type IconNames = (typeof icons)[number]
 type ValidationRules = ValidationRule | ValidationRule[] | null
 
+// Define the FormContext interface based on usage
+interface FormContext {
+  values: Record<string | number, any>;
+  errors: Record<string, string | null>;
+  touched: Record<string, boolean>;
+  setFieldValue: (name: string, value: any) => void;
+  setFieldError: (name: string, error: string | null) => void;
+  setFieldTouched: (name: string, touched: boolean) => void;
+  formState: { value: { disabled: boolean } };
+}
+
 const props = withDefaults(
   defineProps<{
-    modelValue?: string
+    modelValue?: string | number | null
     name?: string
     type?: string
     placeholder?: string
@@ -31,7 +42,8 @@ const props = withDefaults(
     type: 'text',
     size: 'md',
     disabled: false,
-    required: false
+    required: false,
+    color: 'neutral'
   }
 )
 
@@ -48,7 +60,7 @@ const passwordVisible = ref(false)
 const localError = ref<string | null>(null)
 
 // Try to inject form context from SimpleForm if available
-const formContext = inject('formContext', null)
+const formContext = inject<FormContext | null>('formContext', null)
 
 // Initialize with form context if available
 onMounted(() => {
@@ -98,6 +110,8 @@ const inputDisabled = computed(() => {
 })
 
 const colorClasses = computed(() => {
+  if (!props.color) return 'input-neutral';
+  
   return {
     neutral: 'input-neutral',
     primary: 'input-primary',

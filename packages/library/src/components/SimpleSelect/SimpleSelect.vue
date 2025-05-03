@@ -6,6 +6,17 @@ import SimpleIcon from '../SimpleIcon/SimpleIcon.vue'
 
 type ValidationRules = ValidationRule | ValidationRule[] | null
 
+// Define the FormContext interface based on usage
+interface FormContext {
+  values: Record<string, any>;
+  errors: Record<string, string | null>;
+  touched: Record<string, boolean>;
+  setFieldValue: (name: string, value: any) => void;
+  setFieldError: (name: string, error: string | null) => void;
+  setFieldTouched: (name: string, touched: boolean) => void;
+  formState: { value: { disabled: boolean } };
+}
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string | number | null
@@ -43,7 +54,7 @@ const emit = defineEmits<{
 const localError = ref<string | null>(null)
 
 // Try to inject form context from SimpleForm if available
-const formContext = inject('formContext', null)
+const formContext = inject<FormContext | null>('formContext', null)
 
 // Initialize with form context if available
 onMounted(() => {
@@ -90,7 +101,8 @@ const selectDisabled = computed(() => {
 
 const colorClasses = computed(() => {
   if (!props.color) return ''
-  return {
+  
+  const colorMap = {
     neutral: 'select-neutral',
     primary: 'select-primary',
     secondary: 'select-secondary',
@@ -101,16 +113,22 @@ const colorClasses = computed(() => {
     error: 'select-error',
     ghost: 'select-ghost',
     link: 'select-link'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 const sizeClasses = computed(() => {
-  return {
+  if (!props.size) return 'select-md';
+  
+  const sizeMap = {
     xs: 'select-xs',
     sm: 'select-sm',
     md: 'select-md',
     lg: 'select-lg'
-  }[props.size]
+  };
+  
+  return sizeMap[props.size] || 'select-md';
 })
 
 const ghostClass = computed(() => {

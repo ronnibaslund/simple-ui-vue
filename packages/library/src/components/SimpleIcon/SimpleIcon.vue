@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { iconSizes, icons } from '@/globals'
-import type { IconSizes } from '@/globals'
+import { iconSizes, icons } from '../../globals'
+import type { IconSizes } from '../../globals'
 
 type IconNames = (typeof icons)[number]
 

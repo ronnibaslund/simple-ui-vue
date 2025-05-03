@@ -5,6 +5,17 @@ import type { ValidationRule } from '../../utils/ValidationRules'
 
 type ValidationRules = ValidationRule | ValidationRule[] | null
 
+// Define the FormContext interface based on usage
+interface FormContext {
+  values: Record<string, any>;
+  errors: Record<string, string | null>;
+  touched: Record<string, boolean>;
+  setFieldValue: (name: string, value: any) => void;
+  setFieldError: (name: string, error: string | null) => void;
+  setFieldTouched: (name: string, touched: boolean) => void;
+  formState: { value: { disabled: boolean } };
+}
+
 const props = withDefaults(
   defineProps<{
     modelValue?: string | null
@@ -42,7 +53,7 @@ const emit = defineEmits<{
 const localError = ref<string | null>(null)
 
 // Try to inject form context from SimpleForm if available
-const formContext = inject('formContext', null)
+const formContext = inject<FormContext | null>('formContext', null)
 
 // Initialize with form context if available
 onMounted(() => {
@@ -89,7 +100,8 @@ const textareaDisabled = computed(() => {
 
 const colorClasses = computed(() => {
   if (!props.color) return ''
-  return {
+  
+  const colorMap = {
     neutral: 'textarea-neutral',
     primary: 'textarea-primary',
     secondary: 'textarea-secondary',
@@ -100,17 +112,29 @@ const colorClasses = computed(() => {
     error: 'textarea-error',
     ghost: 'textarea-ghost',
     link: 'textarea-link'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 const sizeClasses = computed(() => {
-  return {
+  if (!props.size) return 'textarea-md';
+  
+  // Only handle the sizes that have corresponding CSS classes in the design system
+  const sizeMap = {
     xs: 'textarea-xs',
     sm: 'textarea-sm',
     md: 'textarea-md',
     lg: 'textarea-lg',
     xl: 'textarea-xl'
-  }[props.size]
+  };
+  
+  // For extended sizes that don't have specific classes, use the largest available size (xl)
+  if (props.size in sizeMap) {
+    return sizeMap[props.size as keyof typeof sizeMap];
+  } else {
+    return 'textarea-xl'; // Default to the largest available size for any larger sizes
+  }
 })
 
 const ghostClass = computed(() => {

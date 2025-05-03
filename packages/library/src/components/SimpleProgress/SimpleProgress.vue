@@ -18,7 +18,9 @@ const isIndeterminate = computed(() => props.value === undefined)
 
 // Use the same approach as SimpleToggle for color classes
 const progressColorClasses = computed(() => {
-  return {
+  if (!props.color) return '';
+  
+  const colorMap = {
     neutral: 'progress-neutral',
     primary: 'progress-primary',
     secondary: 'progress-secondary',
@@ -27,7 +29,9 @@ const progressColorClasses = computed(() => {
     warning: 'progress-warning',
     success: 'progress-success',
     info: 'progress-info'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 </script>

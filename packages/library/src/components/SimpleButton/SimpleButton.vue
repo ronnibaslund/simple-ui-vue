@@ -26,7 +26,9 @@ const props = withDefaults(
 )
 
 const colorClasses = computed(() => {
-  return {
+  if (!props.color) return '';
+  
+  const colorMap = {
     neutral: 'btn-neutral',
     primary: 'btn-primary',
     secondary: 'btn-secondary',
@@ -37,15 +39,22 @@ const colorClasses = computed(() => {
     info: 'btn-info',
     ghost: 'btn-ghost',
     link: 'btn-link'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 const sizeClasses = computed(() => {
-  return {
+  if (!props.size) return 'btn-md';
+  
+  const sizeMap = {
     lg: 'btn-lg',
+    md: 'btn-md',
     sm: 'btn-sm',
     xs: 'btn-xs'
-  }[props.size]
+  };
+  
+  return sizeMap[props.size] || 'btn-md';
 })
 
 const otherClasses = computed(() => {

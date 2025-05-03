@@ -25,7 +25,9 @@ const emit = defineEmits(['update:modelValue'])
 
 // Use the same approach as SimpleToggle for color classes
 const rangeColorClasses = computed(() => {
-  return {
+  if (!props.color) return '';
+  
+  const colorMap = {
     neutral: 'range-neutral',
     primary: 'range-primary',
     secondary: 'range-secondary',
@@ -34,19 +36,23 @@ const rangeColorClasses = computed(() => {
     warning: 'range-warning',
     success: 'range-success',
     info: 'range-info'
-  }[props.color]
+  };
+  
+  return colorMap[props.color] || '';
 })
 
 // Size classes using the same approach
 const rangeSizeClasses = computed(() => {
   if (props.size === 'md') return ''
   
-  return {
+  const sizeMap = {
     xs: 'range-xs',
     sm: 'range-sm',
     lg: 'range-lg',
     xl: 'range-xl'
-  }[props.size]
+  };
+  
+  return sizeMap[props.size] || '';
 })
 
 // Compute the fill percentage based on the current value

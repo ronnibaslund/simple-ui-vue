@@ -8,15 +8,25 @@ const props = withDefaults(
     label?: string
     color?: ColorsBrand | ColorsState | ToggleColorsContent
     size?: Sizes
+    disabled?: boolean
   }>(),
   {
     modelValue: false,
-    size: 'md'
+    size: 'md',
+    disabled: false
   }
 )
 
 const toggleColorClasses = computed(() => {
-  return {
+  if (!props.color) return '';
+  
+  // Handle direct toggle-* class names
+  if (typeof props.color === 'string' && props.color.startsWith('toggle-')) {
+    return props.color;
+  }
+  
+  // Map color names to toggle-* classes
+  const colorMap = {
     neutral: 'toggle-neutral',
     primary: 'toggle-primary',
     secondary: 'toggle-secondary',
@@ -25,17 +35,23 @@ const toggleColorClasses = computed(() => {
     warning: 'toggle-warning',
     success: 'toggle-success',
     info: 'toggle-info'
-  }[props.color]
+  };
+  
+  if (typeof props.color === 'string') {
+    return colorMap[props.color as keyof typeof colorMap] || '';
+  }
+  
+  return '';
 })
 
 const sizeClasses = computed(() => {
+  if (!props.size) return 'toggle-md';
   return {
-    xl: 'toggle-xl',
     lg: 'toggle-lg',
     md: 'toggle-md',
     sm: 'toggle-sm',
     xs: 'toggle-xs'
-  }[props.size]
+  }[props.size] || 'toggle-md'
 })
 
 const emit = defineEmits<{
@@ -67,6 +83,7 @@ const toggleChanged = () => {
         class="toggle"
         :class="[toggleColorClasses, sizeClasses]"
         @change="toggleChanged"
+        :disabled="disabled"
       />
       {{ label }}
     </label>
@@ -76,6 +93,7 @@ const toggleChanged = () => {
       class="toggle"
       :class="[toggleColorClasses, sizeClasses]"
       @change="toggleChanged"
+      :disabled="disabled"
       v-else
     />
   </div>

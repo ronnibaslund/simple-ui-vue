@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.9.0
+
+### Minor Changes
+
+- 9b4d594: update modal
+
 ## 2.8.0
 
 ### Minor Changes

@@ -10,7 +10,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Components', link: '/components' },
-      { text: 'Stories', link: 'https://daisy-vue-stories.netlify.app/' }
+      { text: 'Stories', link: '/story' }
     ],
     sidebar: [
       {
@@ -47,7 +47,6 @@ export default defineConfig({
           { text: 'Input', link: '/components/input' },
           { text: 'Icon', link: '/components/icon' },
           { text: 'Modal', link: '/components/modal' },
-          { text: 'Form', link: '/components/form' },
           { text: 'Select', link: '/components/select' },
           { text: 'Textarea', link: '/components/textarea' },
           { text: 'Progress', link: '/components/progress' },

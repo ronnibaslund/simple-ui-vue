@@ -15,7 +15,6 @@
 - [Textarea](/components/textarea)
 - [Toggle](/components/toggle)
 - [Range](/components/range)
-- [Form](/components/form)
 
 ## Data Display Components
 - [DataTable](/components/datatable)

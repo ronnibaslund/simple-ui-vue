@@ -20,14 +20,20 @@ const props = defineProps<{
   showCreateButton?: boolean,
   cancelButtonText?: string,
   createButtonText?: string,
-  cancelButtonColor?: string,
-  createButtonColor?: string,
+  cancelButtonColor?: ButtonColor | string,
+  createButtonColor?: ButtonColor | string,
   closeOnClickOutside?: boolean,
   cancelButtonType?: ButtonType,
   createButtonType?: ButtonType
 }>()
 
-const emit = defineEmits(['cancel', 'create'])
+// Update emits to include all possible events
+const emit = defineEmits<{
+  'cancel': []
+  'create': []
+  'close': []
+  'update:modelValue': [value: boolean]
+}>()
 
 const modalId = ref(props.id || `modal-${Math.random().toString(36).substr(2, 9)}`)
 const dialogRef = ref<HTMLDialogElement | null>(null)
@@ -35,12 +41,15 @@ const dialogRef = ref<HTMLDialogElement | null>(null)
 const showModal = () => {
   if (dialogRef.value) {
     dialogRef.value.showModal()
+    emit('update:modelValue', true)
   }
 }
 
 const closeModal = () => {
   if (dialogRef.value) {
     dialogRef.value.close()
+    emit('update:modelValue', false)
+    emit('close')
   }
 }
 
@@ -54,41 +63,72 @@ const handleCreate = () => {
   closeModal()
 }
 
+// Default close handler for the close button
+const handleClose = () => {
+  closeModal()
+}
+
 // Extract color for SimpleButton from button class
 const getCancelButtonColor = computed<ButtonColor>(() => {
-  if (!props.cancelButtonColor) return 'neutral';
+  if (!props.cancelButtonColor) return 'ghost';
   
-  // Map from btn-* classes to color names
-  if (props.cancelButtonColor === 'btn-outline') return 'neutral';
-  if (props.cancelButtonColor === 'btn-ghost') return 'ghost';
-  if (props.cancelButtonColor === 'btn-link') return 'link';
-  if (props.cancelButtonColor === 'btn-neutral') return 'neutral';
-  if (props.cancelButtonColor === 'btn-primary') return 'primary';
-  if (props.cancelButtonColor === 'btn-secondary') return 'secondary';
-  if (props.cancelButtonColor === 'btn-accent') return 'accent';
-  if (props.cancelButtonColor === 'btn-error') return 'error';
-  if (props.cancelButtonColor === 'btn-warning') return 'warning';
-  if (props.cancelButtonColor === 'btn-success') return 'success';
-  if (props.cancelButtonColor === 'btn-info') return 'info';
+  // Check if the color already has a btn- prefix
+  if (props.cancelButtonColor.startsWith('btn-')) {
+    // Map from btn-* classes to color names
+    if (props.cancelButtonColor === 'btn-outline') return 'neutral';
+    if (props.cancelButtonColor === 'btn-ghost') return 'ghost';
+    if (props.cancelButtonColor === 'btn-link') return 'link';
+    if (props.cancelButtonColor === 'btn-neutral') return 'neutral';
+    if (props.cancelButtonColor === 'btn-primary') return 'primary';
+    if (props.cancelButtonColor === 'btn-secondary') return 'secondary';
+    if (props.cancelButtonColor === 'btn-accent') return 'accent';
+    if (props.cancelButtonColor === 'btn-error') return 'error';
+    if (props.cancelButtonColor === 'btn-warning') return 'warning';
+    if (props.cancelButtonColor === 'btn-success') return 'success';
+    if (props.cancelButtonColor === 'btn-info') return 'info';
+  } else {
+    // Direct color name without btn- prefix
+    const validColors: ButtonColor[] = [
+      'neutral', 'primary', 'secondary', 'accent', 
+      'error', 'warning', 'success', 'info', 'ghost', 'link'
+    ];
+    
+    if (validColors.includes(props.cancelButtonColor as ButtonColor)) {
+      return props.cancelButtonColor as ButtonColor;
+    }
+  }
   
-  return 'neutral';
+  return 'ghost';
 })
 
 const getCreateButtonColor = computed<ButtonColor>(() => {
   if (!props.createButtonColor) return 'primary';
   
-  // Map from btn-* classes to color names
-  if (props.createButtonColor === 'btn-outline') return 'neutral';
-  if (props.createButtonColor === 'btn-ghost') return 'ghost';
-  if (props.createButtonColor === 'btn-link') return 'link';
-  if (props.createButtonColor === 'btn-neutral') return 'neutral';
-  if (props.createButtonColor === 'btn-primary') return 'primary';
-  if (props.createButtonColor === 'btn-secondary') return 'secondary';
-  if (props.createButtonColor === 'btn-accent') return 'accent';
-  if (props.createButtonColor === 'btn-error') return 'error';
-  if (props.createButtonColor === 'btn-warning') return 'warning';
-  if (props.createButtonColor === 'btn-success') return 'success';
-  if (props.createButtonColor === 'btn-info') return 'info';
+  // Check if the color already has a btn- prefix
+  if (props.createButtonColor.startsWith('btn-')) {
+    // Map from btn-* classes to color names
+    if (props.createButtonColor === 'btn-outline') return 'neutral';
+    if (props.createButtonColor === 'btn-ghost') return 'ghost';
+    if (props.createButtonColor === 'btn-link') return 'link';
+    if (props.createButtonColor === 'btn-neutral') return 'neutral';
+    if (props.createButtonColor === 'btn-primary') return 'primary';
+    if (props.createButtonColor === 'btn-secondary') return 'secondary';
+    if (props.createButtonColor === 'btn-accent') return 'accent';
+    if (props.createButtonColor === 'btn-error') return 'error';
+    if (props.createButtonColor === 'btn-warning') return 'warning';
+    if (props.createButtonColor === 'btn-success') return 'success';
+    if (props.createButtonColor === 'btn-info') return 'info';
+  } else {
+    // Direct color name without btn- prefix
+    const validColors: ButtonColor[] = [
+      'neutral', 'primary', 'secondary', 'accent', 
+      'error', 'warning', 'success', 'info', 'ghost', 'link'
+    ];
+    
+    if (validColors.includes(props.createButtonColor as ButtonColor)) {
+      return props.createButtonColor as ButtonColor;
+    }
+  }
   
   return 'primary';
 })
@@ -122,7 +162,7 @@ defineExpose({
             <SimpleButton 
               v-if="showCancelButton" 
               :color="getCancelButtonColor"
-              :type="cancelButtonType"
+              :type="cancelButtonType || 'button'"
               class="mr-2"
               @click="handleCancel"
             >
@@ -131,12 +171,18 @@ defineExpose({
             <SimpleButton 
               v-if="showCreateButton" 
               :color="getCreateButtonColor"
-              :type="createButtonType"
+              :type="createButtonType || 'button'"
               @click="handleCreate"
             >
               {{ createButtonText || 'Create' }}
             </SimpleButton>
-            <SimpleButton v-if="!showCancelButton && !showCreateButton">Close</SimpleButton>
+            <SimpleButton 
+              v-if="!showCancelButton && !showCreateButton" 
+              :type="'button'"
+              @click="handleClose"
+            >
+              Close
+            </SimpleButton>
           </slot>
         </form>
       </div>

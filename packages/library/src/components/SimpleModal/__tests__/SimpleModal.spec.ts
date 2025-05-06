@@ -143,6 +143,7 @@ describe('SimpleModal', () => {
     const buttons = wrapper.findAll('.mock-button')
     expect(buttons.length).toBe(1)
     expect(buttons[0].text()).toBe('Close')
+    expect(buttons[0].attributes('type')).toBe('button')
   })
   
   it('renders cancel button when showCancelButton is true', () => {
@@ -154,6 +155,7 @@ describe('SimpleModal', () => {
     
     const cancelButton = wrapper.findAll('.mock-button').find(btn => btn.text() === 'Cancel')
     expect(cancelButton).toBeTruthy()
+    expect(cancelButton.attributes('type')).toBe('button')
   })
   
   it('uses custom cancel button text when provided', () => {
@@ -178,6 +180,7 @@ describe('SimpleModal', () => {
     
     const createButton = wrapper.findAll('.mock-button').find(btn => btn.text() === 'Create')
     expect(createButton).toBeTruthy()
+    expect(createButton.attributes('type')).toBe('button')
   })
   
   it('uses custom create button text when provided', () => {
@@ -211,13 +214,31 @@ describe('SimpleModal', () => {
     expect(createButton.attributes('type')).toBe('submit')
   })
   
-  it('maps button color classes correctly', () => {
+  it('maps button color classes correctly with btn- prefix', () => {
     wrapper = mount(SimpleModal, {
       props: {
         showCancelButton: true,
         showCreateButton: true,
         cancelButtonColor: 'btn-error',
         createButtonColor: 'btn-success'
+      }
+    })
+    
+    const buttons = wrapper.findAll('.mock-button')
+    const cancelButton = buttons.find(btn => btn.text() === 'Cancel')
+    const createButton = buttons.find(btn => btn.text() === 'Create')
+    
+    expect(cancelButton.classes()).toContain('error')
+    expect(createButton.classes()).toContain('success')
+  })
+  
+  it('accepts direct color names without btn- prefix', () => {
+    wrapper = mount(SimpleModal, {
+      props: {
+        showCancelButton: true,
+        showCreateButton: true,
+        cancelButtonColor: 'error',
+        createButtonColor: 'success'
       }
     })
     
@@ -270,6 +291,8 @@ describe('SimpleModal', () => {
     
     await wrapper.vm.showModal()
     expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(true)
   })
   
   it('exposes closeModal method', async () => {
@@ -277,6 +300,9 @@ describe('SimpleModal', () => {
     
     await wrapper.vm.closeModal()
     expect(HTMLDialogElement.prototype.close).toHaveBeenCalled()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(false)
+    expect(wrapper.emitted('close')).toBeTruthy()
   })
   
   it('emits cancel event when cancel button is clicked', async () => {
@@ -290,6 +316,9 @@ describe('SimpleModal', () => {
     await cancelButton.trigger('click')
     
     expect(wrapper.emitted('cancel')).toBeTruthy()
+    expect(wrapper.emitted('close')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(false)
     expect(HTMLDialogElement.prototype.close).toHaveBeenCalled()
   })
   
@@ -304,6 +333,21 @@ describe('SimpleModal', () => {
     await createButton.trigger('click')
     
     expect(wrapper.emitted('create')).toBeTruthy()
+    expect(wrapper.emitted('close')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(false)
+    expect(HTMLDialogElement.prototype.close).toHaveBeenCalled()
+  })
+  
+  it('emits close event when default close button is clicked', async () => {
+    wrapper = mount(SimpleModal)
+    
+    const closeButton = wrapper.findAll('.mock-button').find(btn => btn.text() === 'Close')
+    await closeButton.trigger('click')
+    
+    expect(wrapper.emitted('close')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
+    expect(wrapper.emitted('update:modelValue')[0][0]).toBe(false)
     expect(HTMLDialogElement.prototype.close).toHaveBeenCalled()
   })
 }) 

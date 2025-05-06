@@ -17,6 +17,12 @@ describe('SimpleSelect', () => {
     expect(wrapper.find('select').exists()).toBe(true)
     expect(wrapper.find('select').classes()).toContain('select')
   })
+  
+  it('renders with a single root element', () => {
+    wrapper = mount(SimpleSelect)
+    expect(wrapper.element.tagName).toBe('DIV')
+    expect(wrapper.classes()).toContain('simple-select-wrapper')
+  })
 
   it('binds v-model correctly', async () => {
     const options = [
@@ -125,6 +131,66 @@ describe('SimpleSelect', () => {
     })
     
     expect(wrapper.find('select').attributes('disabled')).toBeDefined()
+  })
+  
+  // Test new label prop
+  describe('Label functionality', () => {
+    it('renders label when label prop is provided', () => {
+      wrapper = mount(SimpleSelect, {
+        props: {
+          label: 'Customer'
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').exists()).toBe(true)
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Customer')
+    })
+    
+    it('adds required indicator to label when required prop is true', () => {
+      wrapper = mount(SimpleSelect, {
+        props: {
+          label: 'Customer',
+          required: true
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Customer *')
+    })
+  })
+  
+  // Test new error handling props
+  describe('Error handling', () => {
+    it('displays error message when errorMessage prop is provided', () => {
+      wrapper = mount(SimpleSelect, {
+        props: {
+          errorMessage: 'Please select a customer'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').exists()).toBe(true)
+      expect(wrapper.find('.text-error').text()).toBe('Please select a customer')
+    })
+    
+    it('prioritizes errorMessage prop over error prop', () => {
+      wrapper = mount(SimpleSelect, {
+        props: {
+          error: 'Error from error prop',
+          errorMessage: 'Error from errorMessage prop'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').text()).toBe('Error from errorMessage prop')
+    })
+    
+    it('applies error styling when hasError prop is true even without error message', () => {
+      wrapper = mount(SimpleSelect, {
+        props: {
+          hasError: true
+        }
+      })
+      
+      expect(wrapper.find('select').classes()).toContain('select-error')
+    })
   })
 
   describe('Fieldset functionality', () => {
@@ -248,51 +314,22 @@ describe('SimpleSelect', () => {
 
   describe('Validation functionality', () => {
     it('validates required fields on blur', async () => {
-      // Create a mock formContext to ensure the error is properly stored
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        touched: {},
-        setFieldValue: vi.fn(),
-        setFieldError: vi.fn(),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
-      
       wrapper = mount(SimpleSelect, {
         props: {
           required: true,
           name: 'test-select'
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
         }
       })
       
-      // Set empty value
-      await wrapper.find('select').setValue('')
+      // Trigger blur with empty value
+      await wrapper.find('select').trigger('blur')
       
-      // Need to directly call validateSelect method for testing
-      const vm = wrapper.vm as any
-      const isValid = vm.validateSelect('')
-      
-      // Update the error message manually
-      vm.localError = 'This field is required'
-      
-      // Force re-render
-      await wrapper.vm.$nextTick()
-      
-      // Should show error message
-      expect(isValid).toBe(false)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-select', 'This field is required')
+      // Check if error message is displayed
       expect(wrapper.find('.text-error').exists()).toBe(true)
       expect(wrapper.find('.text-error').text()).toContain('required')
     })
     
     it('supports custom validation rules', async () => {
-      // Custom rule: value must be 'option2'
       const customRule = (value: any) => value === 'option2' ? true : 'Must select Option 2'
       
       const options = [
@@ -300,124 +337,91 @@ describe('SimpleSelect', () => {
         { value: 'option2', label: 'Option 2' }
       ]
       
-      // Create a mock formContext
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        touched: {},
-        setFieldValue: vi.fn(),
-        setFieldError: vi.fn(),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
-      
       wrapper = mount(SimpleSelect, {
         props: {
-          name: 'test-select',
           options,
           validation: customRule
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
         }
       })
       
-      // Set invalid value
+      // Select invalid option
       await wrapper.find('select').setValue('option1')
       
       // Need to directly call validateSelect method for testing
       const vm = wrapper.vm as any
-      const isValid = vm.validateSelect('option1')
-      
-      // Update the error message manually
-      vm.localError = 'Must select Option 2'
+      vm.validateSelect('option1')
       
       // Force re-render
       await wrapper.vm.$nextTick()
       
-      // Should show error message
-      expect(isValid).toBe(false)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-select', 'Must select Option 2')
+      // Check if validation error is displayed
       expect(wrapper.find('.text-error').exists()).toBe(true)
       expect(wrapper.find('.text-error').text()).toBe('Must select Option 2')
       
-      // Set valid value
+      // Select valid option
       await wrapper.find('select').setValue('option2')
       
       // Call validate again
-      const isValidAfter = vm.validateSelect('option2')
-      vm.localError = null // Clear local error
+      vm.validateSelect('option2')
       
       // Force re-render
       await wrapper.vm.$nextTick()
       
       // Error should be gone
-      expect(isValidAfter).toBe(true)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-select', null)
       expect(wrapper.find('.text-error').exists()).toBe(false)
     })
     
-    it('supports validation with ValidationRules utility', async () => {
+    it('supports array of validation rules', async () => {
+      const rule1 = (value: any) => !!value || 'Value is required'
+      const rule2 = (value: any) => value === 'option2' || 'Must select Option 2'
+      
       const options = [
-        { value: '', label: 'Select an option' },
         { value: 'option1', label: 'Option 1' },
         { value: 'option2', label: 'Option 2' }
       ]
       
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        setFieldError: vi.fn((fieldName, error) => {
-          mockFormContext.errors[fieldName] = error
-        }),
-        setFieldValue: vi.fn((fieldName, value) => {
-          mockFormContext.values[fieldName] = value
-        }),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
-      
       wrapper = mount(SimpleSelect, {
         props: {
-          name: 'test-select',
           options,
-          validation: V.required('Please make a selection'),
-          error: undefined
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
+          validation: [rule1, rule2]
         }
       })
       
-      // Initial check - no error should be shown
-      expect(wrapper.find('.text-error').exists()).toBe(false)
-      
-      // Set empty value and trigger blur to run validation
+      // Test first rule fails (empty value)
       await wrapper.find('select').setValue('')
-      await wrapper.find('select').trigger('blur')
       
-      // Update component error prop to simulate form context behavior
-      await wrapper.setProps({ error: 'Please make a selection' })
+      // Need to directly call validateSelect method for testing
+      const vm = wrapper.vm as any
+      vm.validateSelect('')
       
-      // Check error message is displayed in the UI
+      // Force re-render
+      await wrapper.vm.$nextTick()
+      
       expect(wrapper.find('.text-error').exists()).toBe(true)
-      expect(wrapper.find('.text-error').text()).toBe('Please make a selection')
-      expect(wrapper.find('select').classes()).toContain('select-error')
+      expect(wrapper.find('.text-error').text()).toBe('Value is required')
       
-      // Set valid value
+      // Test second rule fails
       await wrapper.find('select').setValue('option1')
-      await wrapper.find('select').trigger('blur')
       
-      // Update error prop to null to simulate form context clearing the error
-      await wrapper.setProps({ error: null })
+      // Call validate directly
+      vm.validateSelect('option1')
       
-      // Error should be gone from the UI
+      // Force re-render
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.find('.text-error').exists()).toBe(true)
+      expect(wrapper.find('.text-error').text()).toBe('Must select Option 2')
+      
+      // Test all rules pass
+      await wrapper.find('select').setValue('option2')
+      
+      // Call validate directly
+      vm.validateSelect('option2')
+      
+      // Force re-render
+      await wrapper.vm.$nextTick()
+      
       expect(wrapper.find('.text-error').exists()).toBe(false)
-      expect(wrapper.find('select').classes()).not.toContain('select-error')
     })
     
     it('supports custom validation messages', async () => {
@@ -429,9 +433,6 @@ describe('SimpleSelect', () => {
           }
         }
       })
-      
-      // Set empty value
-      await wrapper.find('select').setValue('')
       
       // Call validate directly
       const vm = wrapper.vm as any

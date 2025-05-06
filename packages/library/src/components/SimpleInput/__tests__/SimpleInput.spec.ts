@@ -27,6 +27,12 @@ describe('SimpleInput', () => {
     expect(wrapper.find('input').attributes('type')).toBe('text')
   })
 
+  it('renders with a single root element', () => {
+    wrapper = mount(SimpleInput)
+    expect(wrapper.element.tagName).toBe('DIV')
+    expect(wrapper.classes()).toContain('simple-input-wrapper')
+  })
+
   it('binds v-model correctly', async () => {
     wrapper = mount(SimpleInput, {
       props: {
@@ -198,6 +204,66 @@ describe('SimpleInput', () => {
         props: { type }
       })
       expect(wrapper.find('input').attributes('type')).toBe(type)
+    })
+  })
+
+  // Test new label prop
+  describe('Label functionality', () => {
+    it('renders label when label prop is provided', () => {
+      wrapper = mount(SimpleInput, {
+        props: {
+          label: 'Project Name'
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').exists()).toBe(true)
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Project Name')
+    })
+    
+    it('adds required indicator to label when required prop is true', () => {
+      wrapper = mount(SimpleInput, {
+        props: {
+          label: 'Project Name',
+          required: true
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Project Name *')
+    })
+  })
+  
+  // Test new error handling props
+  describe('Error handling', () => {
+    it('displays error message when errorMessage prop is provided', () => {
+      wrapper = mount(SimpleInput, {
+        props: {
+          errorMessage: 'This field is invalid'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').exists()).toBe(true)
+      expect(wrapper.find('.text-error').text()).toBe('This field is invalid')
+    })
+    
+    it('prioritizes errorMessage prop over error prop', () => {
+      wrapper = mount(SimpleInput, {
+        props: {
+          error: 'Error from error prop',
+          errorMessage: 'Error from errorMessage prop'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').text()).toBe('Error from errorMessage prop')
+    })
+    
+    it('applies error styling when hasError prop is true even without error message', () => {
+      wrapper = mount(SimpleInput, {
+        props: {
+          hasError: true
+        }
+      })
+      
+      expect(wrapper.find('label').classes()).toContain('input-error')
     })
   })
 

@@ -25,6 +25,11 @@ const props = withDefaults(
   }
 )
 
+// Add emits declaration to properly handle click events
+const emit = defineEmits<{
+  'click': [event: MouseEvent]
+}>()
+
 const colorClasses = computed(() => {
   if (!props.color) return '';
   
@@ -68,12 +73,20 @@ const otherClasses = computed(() => {
     'btn-dash': props.dashed
   }
 })
+
+// Handler for the click event to properly emit it
+const handleClick = (event: MouseEvent) => {
+  if (!props.loading) {
+    emit('click', event)
+  }
+}
 </script>
 <template>
   <button 
     class="btn" 
     :class="[colorClasses, sizeClasses, otherClasses]"
     :type="type"
+    @click="handleClick"
   >
     <SimpleLoading v-if="loading" :size="size" />
     <slot></slot>

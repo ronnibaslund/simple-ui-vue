@@ -33,13 +33,17 @@ const props = withDefaults(
     validation?: ValidationRules
     validationMessages?: Record<string, string>
     rows?: number
+    label?: string
+    errorMessage?: string
+    hasError?: boolean
   }>(),
   {
     size: 'md',
     disabled: false,
     ghost: false,
     required: false,
-    rows: 3
+    rows: 3,
+    hasError: false
   }
 )
 
@@ -146,7 +150,10 @@ const requiredIndicator = computed(() => {
 })
 
 const errorMessage = computed(() => {
-  // Use directly provided error prop first
+  // First check the new errorMessage prop
+  if (props.errorMessage) return props.errorMessage
+  
+  // Then use directly provided error prop
   if (props.error) return props.error
   
   // Then use local validation error
@@ -158,6 +165,11 @@ const errorMessage = computed(() => {
   }
   
   return null
+})
+
+// Check if textarea has error
+const hasError = computed(() => {
+  return props.hasError || !!errorMessage.value
 })
 
 // Get validation message based on rule name
@@ -273,57 +285,67 @@ const handleChange = (event: Event) => {
 </script>
 
 <template>
-  <div class="relative" v-if="!fieldset">
-    <textarea
-      v-model="textareaValue"
-      :name="name"
-      :disabled="textareaDisabled"
-      :required="required"
-      :placeholder="placeholder"
-      :rows="rows"
-      :class="[
-        'textarea w-full', 
-        colorClasses, 
-        sizeClasses, 
-        ghostClass, 
-        { 'textarea-error': errorMessage }
-      ]"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @change="handleChange"
-    ></textarea>
+  <!-- Wrap everything in a single root div to avoid fragment issues -->
+  <div class="simple-textarea-wrapper">
+    <!-- Standard textarea with optional label -->
+    <div class="relative" v-if="!fieldset">
+      <!-- Display label if provided -->
+      <div v-if="label" class="mb-1 text-sm font-medium">
+        {{ label }}{{ requiredIndicator }}
+      </div>
     
-    <!-- Error message -->
-    <div v-if="errorMessage" class="text-error text-xs mt-1">
-      {{ errorMessage }}
+      <textarea
+        v-model="textareaValue"
+        :name="name"
+        :disabled="textareaDisabled"
+        :required="required"
+        :placeholder="placeholder"
+        :rows="rows"
+        :class="[
+          'textarea w-full', 
+          colorClasses, 
+          sizeClasses, 
+          ghostClass, 
+          { 'textarea-error': hasError }
+        ]"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @change="handleChange"
+      ></textarea>
+      
+      <!-- Error message -->
+      <div v-if="errorMessage" class="text-error text-xs mt-1">
+        {{ errorMessage }}
+      </div>
     </div>
-  </div>
 
-  <fieldset class="fieldset" v-if="fieldset">
-    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
-    <textarea
-      v-model="textareaValue"
-      :name="name"
-      :disabled="textareaDisabled"
-      :required="required"
-      :placeholder="placeholder"
-      :rows="rows"
-      :class="[
-        'textarea w-full', 
-        colorClasses, 
-        sizeClasses, 
-        ghostClass, 
-        { 'textarea-error': errorMessage }
-      ]"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @change="handleChange"
-    ></textarea>
-    
-    <!-- Show error message and/or fieldset label -->
-    <div class="mt-1">
-      <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
-      <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
-    </div>
-  </fieldset>
+    <!-- Fieldset version -->
+    <fieldset class="fieldset" v-else>
+      <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
+      <textarea
+        v-model="textareaValue"
+        :name="name"
+        :disabled="textareaDisabled"
+        :required="required"
+        :placeholder="placeholder"
+        :rows="rows"
+        :class="[
+          'textarea w-full', 
+          colorClasses, 
+          sizeClasses, 
+          ghostClass, 
+          { 'textarea-error': hasError }
+        ]"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @change="handleChange"
+      ></textarea>
+      
+      <!-- Show error message and/or fieldset label -->
+      <div class="mt-1">
+        <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
+        <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
+      </div>
+    </fieldset>
+  </div>
 </template>

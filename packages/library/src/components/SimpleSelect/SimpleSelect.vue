@@ -34,13 +34,17 @@ const props = withDefaults(
     required?: boolean
     validation?: ValidationRules
     validationMessages?: Record<string, string>
+    label?: string
+    errorMessage?: string
+    hasError?: boolean
   }>(),
   {
     size: 'md',
     disabled: false,
     ghost: false,
     required: false,
-    options: () => []
+    options: () => [],
+    hasError: false
   }
 )
 
@@ -140,7 +144,10 @@ const requiredIndicator = computed(() => {
 })
 
 const errorMessage = computed(() => {
-  // Use directly provided error prop first
+  // First check the new errorMessage prop
+  if (props.errorMessage) return props.errorMessage
+  
+  // Then use directly provided error prop
   if (props.error) return props.error
   
   // Then use local validation error
@@ -152,6 +159,11 @@ const errorMessage = computed(() => {
   }
   
   return null
+})
+
+// Check if select has error
+const hasError = computed(() => {
+  return props.hasError || !!errorMessage.value
 })
 
 // Get validation message based on rule name
@@ -267,75 +279,85 @@ const handleChange = (event: Event) => {
 </script>
 
 <template>
-  <div class="relative" v-if="!fieldset">
-    <select
-      v-model="selectValue"
-      :name="name"
-      :disabled="selectDisabled"
-      :required="required"
-      :class="[
-        'select w-full', 
-        colorClasses, 
-        sizeClasses, 
-        ghostClass, 
-        { 'select-error': errorMessage }
-      ]"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @change="handleChange"
-    >
-      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
-      <option 
-        v-for="option in options" 
-        :key="option.value" 
-        :value="option.value" 
-        :disabled="option.disabled"
-      >
-        {{ option.label }}
-      </option>
-      <slot></slot>
-    </select>
+  <!-- Wrap everything in a single root div to avoid fragment issues -->
+  <div class="simple-select-wrapper">
+    <!-- Standard select with optional label -->
+    <div class="relative" v-if="!fieldset">
+      <!-- Display label if provided -->
+      <div v-if="label" class="mb-1 text-sm font-medium">
+        {{ label }}{{ requiredIndicator }}
+      </div>
     
-    <!-- Error message -->
-    <div v-if="errorMessage" class="text-error text-xs mt-1">
-      {{ errorMessage }}
+      <select
+        v-model="selectValue"
+        :name="name"
+        :disabled="selectDisabled"
+        :required="required"
+        :class="[
+          'select w-full', 
+          colorClasses, 
+          sizeClasses, 
+          ghostClass, 
+          { 'select-error': hasError }
+        ]"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @change="handleChange"
+      >
+        <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+        <option 
+          v-for="option in options" 
+          :key="option.value" 
+          :value="option.value" 
+          :disabled="option.disabled"
+        >
+          {{ option.label }}
+        </option>
+        <slot></slot>
+      </select>
+      
+      <!-- Error message -->
+      <div v-if="errorMessage" class="text-error text-xs mt-1">
+        {{ errorMessage }}
+      </div>
     </div>
-  </div>
 
-  <fieldset class="fieldset" v-if="fieldset">
-    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
-    <select
-      v-model="selectValue"
-      :name="name"
-      :disabled="selectDisabled"
-      :required="required"
-      :class="[
-        'select w-full', 
-        colorClasses, 
-        sizeClasses, 
-        ghostClass, 
-        { 'select-error': errorMessage }
-      ]"
-      @blur="handleBlur"
-      @focus="handleFocus"
-      @change="handleChange"
-    >
-      <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
-      <option 
-        v-for="option in options" 
-        :key="option.value" 
-        :value="option.value" 
-        :disabled="option.disabled"
+    <!-- Fieldset version -->
+    <fieldset class="fieldset" v-else>
+      <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
+      <select
+        v-model="selectValue"
+        :name="name"
+        :disabled="selectDisabled"
+        :required="required"
+        :class="[
+          'select w-full', 
+          colorClasses, 
+          sizeClasses, 
+          ghostClass, 
+          { 'select-error': hasError }
+        ]"
+        @blur="handleBlur"
+        @focus="handleFocus"
+        @change="handleChange"
       >
-        {{ option.label }}
-      </option>
-      <slot></slot>
-    </select>
-    
-    <!-- Show error message and/or fieldset label -->
-    <div class="mt-1">
-      <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
-      <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
-    </div>
-  </fieldset>
+        <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+        <option 
+          v-for="option in options" 
+          :key="option.value" 
+          :value="option.value" 
+          :disabled="option.disabled"
+        >
+          {{ option.label }}
+        </option>
+        <slot></slot>
+      </select>
+      
+      <!-- Show error message and/or fieldset label -->
+      <div class="mt-1">
+        <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
+        <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
+      </div>
+    </fieldset>
+  </div>
 </template>

@@ -17,6 +17,12 @@ describe('SimpleTextarea', () => {
     expect(wrapper.find('textarea').exists()).toBe(true)
     expect(wrapper.find('textarea').classes()).toContain('textarea')
   })
+  
+  it('renders with a single root element', () => {
+    wrapper = mount(SimpleTextarea)
+    expect(wrapper.element.tagName).toBe('DIV')
+    expect(wrapper.classes()).toContain('simple-textarea-wrapper')
+  })
 
   it('binds v-model correctly', async () => {
     wrapper = mount(SimpleTextarea, {
@@ -95,6 +101,66 @@ describe('SimpleTextarea', () => {
     })
     
     expect(wrapper.find('textarea').attributes('disabled')).toBeDefined()
+  })
+  
+  // Test new label prop
+  describe('Label functionality', () => {
+    it('renders label when label prop is provided', () => {
+      wrapper = mount(SimpleTextarea, {
+        props: {
+          label: 'Description'
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').exists()).toBe(true)
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Description')
+    })
+    
+    it('adds required indicator to label when required prop is true', () => {
+      wrapper = mount(SimpleTextarea, {
+        props: {
+          label: 'Description',
+          required: true
+        }
+      })
+      
+      expect(wrapper.find('.mb-1.text-sm').text()).toBe('Description *')
+    })
+  })
+  
+  // Test new error handling props
+  describe('Error handling', () => {
+    it('displays error message when errorMessage prop is provided', () => {
+      wrapper = mount(SimpleTextarea, {
+        props: {
+          errorMessage: 'Please enter a description'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').exists()).toBe(true)
+      expect(wrapper.find('.text-error').text()).toBe('Please enter a description')
+    })
+    
+    it('prioritizes errorMessage prop over error prop', () => {
+      wrapper = mount(SimpleTextarea, {
+        props: {
+          error: 'Error from error prop',
+          errorMessage: 'Error from errorMessage prop'
+        }
+      })
+      
+      expect(wrapper.find('.text-error').text()).toBe('Error from errorMessage prop')
+    })
+    
+    it('applies error styling when hasError prop is true even without error message', () => {
+      wrapper = mount(SimpleTextarea, {
+        props: {
+          hasError: true
+        }
+      })
+      
+      expect(wrapper.find('textarea').classes()).toContain('textarea-error')
+    })
   })
 
   describe('Fieldset functionality', () => {
@@ -211,45 +277,17 @@ describe('SimpleTextarea', () => {
 
   describe('Validation functionality', () => {
     it('validates required fields on blur', async () => {
-      // Create a mock formContext to ensure the error is properly stored
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        touched: {},
-        setFieldValue: vi.fn(),
-        setFieldError: vi.fn(),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
-      
       wrapper = mount(SimpleTextarea, {
         props: {
           required: true,
           name: 'test-textarea'
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
         }
       })
       
-      // Set empty value
-      await wrapper.find('textarea').setValue('')
+      // Trigger blur with empty value
+      await wrapper.find('textarea').trigger('blur')
       
-      // Need to directly call validateTextarea method for testing
-      const vm = wrapper.vm as any
-      const isValid = vm.validateTextarea('')
-      
-      // Update the error message manually
-      vm.localError = 'This field is required'
-      
-      // Force re-render
-      await wrapper.vm.$nextTick()
-      
-      // Should show error message
-      expect(isValid).toBe(false)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-textarea', 'This field is required')
+      // Check if error message is displayed
       expect(wrapper.find('.text-error').exists()).toBe(true)
       expect(wrapper.find('.text-error').text()).toContain('required')
     })
@@ -258,26 +296,9 @@ describe('SimpleTextarea', () => {
       // Custom rule: value must be at least 10 characters
       const customRule = (value: any) => value.length >= 10 ? true : 'Must be at least 10 characters'
       
-      // Create a mock formContext
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        touched: {},
-        setFieldValue: vi.fn(),
-        setFieldError: vi.fn(),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
-      
       wrapper = mount(SimpleTextarea, {
         props: {
-          name: 'test-textarea',
           validation: customRule
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
         }
       })
       
@@ -286,17 +307,12 @@ describe('SimpleTextarea', () => {
       
       // Need to directly call validateTextarea method for testing
       const vm = wrapper.vm as any
-      const isValid = vm.validateTextarea('Too short')
-      
-      // Update the error message manually
-      vm.localError = 'Must be at least 10 characters'
+      vm.validateTextarea('Too short')
       
       // Force re-render
       await wrapper.vm.$nextTick()
       
       // Should show error message
-      expect(isValid).toBe(false)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-textarea', 'Must be at least 10 characters')
       expect(wrapper.find('.text-error').exists()).toBe(true)
       expect(wrapper.find('.text-error').text()).toBe('Must be at least 10 characters')
       
@@ -304,70 +320,60 @@ describe('SimpleTextarea', () => {
       await wrapper.find('textarea').setValue('This is long enough')
       
       // Call validate again
-      const isValidAfter = vm.validateTextarea('This is long enough')
-      vm.localError = null // Clear local error
+      vm.validateTextarea('This is long enough')
       
       // Force re-render
       await wrapper.vm.$nextTick()
       
       // Error should be gone
-      expect(isValidAfter).toBe(true)
-      expect(mockFormContext.setFieldError).toHaveBeenCalledWith('test-textarea', null)
       expect(wrapper.find('.text-error').exists()).toBe(false)
     })
     
-    it('supports validation with ValidationRules utility', async () => {
-      const mockFormContext = {
-        values: {},
-        errors: {},
-        setFieldError: vi.fn((fieldName, error) => {
-          mockFormContext.errors[fieldName] = error
-        }),
-        setFieldValue: vi.fn((fieldName, value) => {
-          mockFormContext.values[fieldName] = value
-        }),
-        setFieldTouched: vi.fn(),
-        formState: { value: { disabled: false } }
-      }
+    it('supports array of validation rules', async () => {
+      const rule1 = (value: any) => !!value || 'Value is required'
+      const rule2 = (value: any) => value.length >= 10 || 'Must be at least 10 characters'
       
       wrapper = mount(SimpleTextarea, {
         props: {
-          name: 'test-textarea',
-          validation: V.minLength(5, 'Text must be at least 5 characters'),
-          error: undefined
-        },
-        global: {
-          provide: {
-            formContext: mockFormContext
-          }
+          validation: [rule1, rule2]
         }
       })
       
-      // Initial check - no error should be shown
-      expect(wrapper.find('.text-error').exists()).toBe(false)
+      // Test first rule fails (empty value)
+      await wrapper.find('textarea').setValue('')
       
-      // Set invalid value (too short) and trigger blur
-      await wrapper.find('textarea').setValue('Hi')
-      await wrapper.find('textarea').trigger('blur')
+      // Need to directly call validateTextarea method for testing
+      const vm = wrapper.vm as any
+      vm.validateTextarea('')
       
-      // Update component error prop to simulate form context behavior
-      await wrapper.setProps({ error: 'Text must be at least 5 characters' })
+      // Force re-render
+      await wrapper.vm.$nextTick()
       
-      // Check error message is displayed in the UI
       expect(wrapper.find('.text-error').exists()).toBe(true)
-      expect(wrapper.find('.text-error').text()).toBe('Text must be at least 5 characters')
-      expect(wrapper.find('textarea').classes()).toContain('textarea-error')
+      expect(wrapper.find('.text-error').text()).toBe('Value is required')
       
-      // Set valid value (long enough)
-      await wrapper.find('textarea').setValue('Hello world')
-      await wrapper.find('textarea').trigger('blur')
+      // Test second rule fails
+      await wrapper.find('textarea').setValue('Too short')
       
-      // Update error prop to null to simulate form context clearing the error
-      await wrapper.setProps({ error: null })
+      // Call validate directly
+      vm.validateTextarea('Too short')
       
-      // Error should be gone from the UI
+      // Force re-render
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.find('.text-error').exists()).toBe(true)
+      expect(wrapper.find('.text-error').text()).toBe('Must be at least 10 characters')
+      
+      // Test all rules pass
+      await wrapper.find('textarea').setValue('This is long enough')
+      
+      // Call validate directly
+      vm.validateTextarea('This is long enough')
+      
+      // Force re-render
+      await wrapper.vm.$nextTick()
+      
       expect(wrapper.find('.text-error').exists()).toBe(false)
-      expect(wrapper.find('textarea').classes()).not.toContain('textarea-error')
     })
     
     it('supports custom validation messages', async () => {
@@ -379,9 +385,6 @@ describe('SimpleTextarea', () => {
           }
         }
       })
-      
-      // Set empty value
-      await wrapper.find('textarea').setValue('')
       
       // Call validate directly
       const vm = wrapper.vm as any

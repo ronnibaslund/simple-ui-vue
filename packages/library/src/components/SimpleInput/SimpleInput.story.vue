@@ -85,6 +85,55 @@ const handleSubmit = () => {
       </div>
     </Variant>
     
+    <Variant title="Label and Error Examples">
+      <div class="p-4 story-container">
+        <section class="mb-8">
+          <h3 class="text-xl font-semibold mb-4">Label and Error Examples</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <h4 class="font-medium mb-2">With Label</h4>
+              <SimpleInput 
+                v-model="state.value" 
+                label="Project Name"
+                placeholder="Enter project name" 
+              />
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2">With Label + Required</h4>
+              <SimpleInput 
+                v-model="state.value" 
+                label="Project Name"
+                placeholder="Enter project name"
+                required
+              />
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2">With Error Message</h4>
+              <SimpleInput 
+                v-model="state.value" 
+                label="Project Name"
+                placeholder="Enter project name"
+                error-message="Project name is required"
+              />
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2">With Has Error Flag</h4>
+              <SimpleInput 
+                v-model="state.value" 
+                label="Project Name"
+                placeholder="Enter project name"
+                has-error
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    </Variant>
+    
     <Variant title="Validation Examples">
       <div class="p-4 story-container">
         <section class="mb-8">
@@ -279,6 +328,7 @@ A versatile input component that supports various types, sizes, colors, and feat
 - Password visibility toggle
 - Fieldset wrapper with legend and helper text
 - Disabled state
+- Labels and error messages
 
 ## Props
 
@@ -295,18 +345,44 @@ A versatile input component that supports various types, sizes, colors, and feat
 | fieldsetLabel | string | undefined | Helper text below the input |
 | icon | IconNames | undefined | Icon to display in the input |
 | iconSize | IconSizes | undefined | Size of the icon |
+| label | string | undefined | Label to display above the input |
+| error | string | undefined | Error message to display |
+| errorMessage | string | undefined | Alternative way to provide error message |
+| hasError | boolean | false | Whether to show input in error state |
+| required | boolean | false | Whether the field is required |
+| validation | ValidationRules | undefined | Validation rules to apply |
+| validationMessages | object | undefined | Custom validation messages |
 
 ## Events
 
 | Event | Payload | Description |
 |-------|---------|-------------|
 | update:modelValue | string | Emitted when input value changes |
+| blur | FocusEvent | Emitted when input loses focus |
+| focus | FocusEvent | Emitted when input gains focus |
+| change | Event | Emitted when input value changes |
+| input | Event | Emitted during typing |
 
 ## Usage Examples
 
 ### Basic Input
 ```vue
 <SimpleInput v-model="value" placeholder="Basic input" />
+```
+
+### With Label
+```vue
+<SimpleInput v-model="value" label="Project Name" placeholder="Enter project name" />
+```
+
+### With Error Message
+```vue
+<SimpleInput
+  v-model="value"
+  label="Project Name"
+  placeholder="Enter project name"
+  error-message="Project name is required"
+/>
 ```
 
 ### With Icon

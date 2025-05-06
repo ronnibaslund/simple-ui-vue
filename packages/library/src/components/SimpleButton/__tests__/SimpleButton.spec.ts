@@ -170,6 +170,18 @@ describe('SimpleButton', () => {
     expect(clickHandler).not.toHaveBeenCalled()
   })
 
+  it('does not emit click event when loading', async () => {
+    wrapper = mount(SimpleButton, {
+      props: {
+        loading: true
+      }
+    })
+    
+    await wrapper.find('button').trigger('click')
+    
+    expect(wrapper.emitted('click')).toBeFalsy()
+  })
+
   it('combines multiple style props correctly', () => {
     wrapper = mount(SimpleButton, {
       props: {

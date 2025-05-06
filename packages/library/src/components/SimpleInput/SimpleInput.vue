@@ -37,13 +37,17 @@ const props = withDefaults(
     required?: boolean
     validation?: ValidationRules
     validationMessages?: Record<string, string>
+    label?: string
+    errorMessage?: string
+    hasError?: boolean
   }>(),
   {
     type: 'text',
     size: 'md',
     disabled: false,
     required: false,
-    color: 'neutral'
+    color: 'neutral',
+    hasError: false
   }
 )
 
@@ -163,7 +167,10 @@ const requiredIndicator = computed(() => {
 })
 
 const errorMessage = computed(() => {
-  // Use directly provided error prop first
+  // First check the new errorMessage prop
+  if (props.errorMessage) return props.errorMessage
+  
+  // Then use directly provided error prop
   if (props.error) return props.error
   
   // Then use local validation error
@@ -175,6 +182,11 @@ const errorMessage = computed(() => {
   }
   
   return null
+})
+
+// Check if input has error
+const hasError = computed(() => {
+  return props.hasError || !!errorMessage.value
 })
 
 // Get validation message based on rule name
@@ -327,83 +339,93 @@ const handleInput = (event: Event) => {
 </script>
 
 <template>
-  <div class="relative" v-if="!fieldset">
-    <label :class="[colorClasses, sizeClasses, 'input w-full', { 'input-error': errorMessage }]">
-      <SimpleIcon
-        v-if="icon"
-        :icon="icon"
-        :size="props.iconSize"
-      />
-      <input
-        v-model="inputValue"
-        :name="name"
-        :type="type"
-        :placeholder="inputPlaceholder"
-        :disabled="inputDisabled"
-        :required="required"
-        class="grow focus:outline-0"
-        @blur="handleBlur"
-        @focus="handleFocus"
-        @change="handleChange"
-        @input="handleInput"
-      />
-      
-      <!-- Password visibility toggle using swap -->
-      <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
-        <input 
-          type="checkbox" 
-          aria-label="Toggle password visibility" 
-          v-model="passwordVisible"
+  <!-- Wrap everything in a single root div to avoid fragment issues -->
+  <div class="simple-input-wrapper">
+    <!-- Standard input with optional label -->
+    <div class="relative" v-if="!fieldset">
+      <!-- Display label if provided -->
+      <div v-if="label" class="mb-1 text-sm font-medium">
+        {{ label }}{{ requiredIndicator }}
+      </div>
+  
+      <label :class="[colorClasses, sizeClasses, 'input w-full', { 'input-error': hasError }]">
+        <SimpleIcon
+          v-if="icon"
+          :icon="icon"
+          :size="props.iconSize"
         />
-        <SimpleIcon class="swap-off" icon="eye" :size="2" />
-        <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+        <input
+          v-model="inputValue"
+          :name="name"
+          :type="type"
+          :placeholder="inputPlaceholder"
+          :disabled="inputDisabled"
+          :required="required"
+          class="grow focus:outline-0"
+          @blur="handleBlur"
+          @focus="handleFocus"
+          @change="handleChange"
+          @input="handleInput"
+        />
+        
+        <!-- Password visibility toggle using swap -->
+        <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
+          <input 
+            type="checkbox" 
+            aria-label="Toggle password visibility" 
+            v-model="passwordVisible"
+          />
+          <SimpleIcon class="swap-off" icon="eye" :size="2" />
+          <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+        </label>
       </label>
-    </label>
-    
-    <!-- Error message -->
-    <div v-if="errorMessage" class="text-error text-xs mt-1">
-      {{ errorMessage }}
+      
+      <!-- Error message -->
+      <div v-if="errorMessage" class="text-error text-xs mt-1">
+        {{ errorMessage }}
+      </div>
     </div>
-  </div>
 
-  <fieldset class="fieldset mb-0" v-if="fieldset">
-    <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
-    <label :class="[colorClasses, sizeClasses, 'input w-full', { 'input-error': errorMessage }]">
-      <SimpleIcon
-        v-if="icon"
-        :icon="icon"
-        :size="props.iconSize"
-      />
-      <input
-        v-model="inputValue"
-        :name="name"
-        :type="type"
-        :placeholder="inputPlaceholder"
-        :disabled="inputDisabled"
-        :required="required"
-        class="grow focus:outline-0"
-        @blur="handleBlur"
-        @focus="handleFocus"
-        @change="handleChange"
-        @input="handleInput"
-      />
-      
-      <!-- Password visibility toggle using swap -->
-      <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
-        <input 
-          type="checkbox" 
-          aria-label="Toggle password visibility" 
-          v-model="passwordVisible"
+    <!-- Fieldset version -->
+    <fieldset class="fieldset mb-0" v-else>
+      <legend class="fieldset-legend" v-if="fieldsetLegend">{{ fieldsetLegend }}{{ requiredIndicator }}</legend>
+      <label :class="[colorClasses, sizeClasses, 'input w-full', { 'input-error': hasError }]">
+        <SimpleIcon
+          v-if="icon"
+          :icon="icon"
+          :size="props.iconSize"
         />
-        <SimpleIcon class="swap-off" icon="eye" :size="2" />
-        <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+        <input
+          v-model="inputValue"
+          :name="name"
+          :type="type"
+          :placeholder="inputPlaceholder"
+          :disabled="inputDisabled"
+          :required="required"
+          class="grow focus:outline-0"
+          @blur="handleBlur"
+          @focus="handleFocus"
+          @change="handleChange"
+          @input="handleInput"
+        />
+        
+        <!-- Password visibility toggle using swap -->
+        <label v-if="isPassword" class="swap btn btn-xs btn-ghost btn-circle text-base-content/60">
+          <input 
+            type="checkbox" 
+            aria-label="Toggle password visibility" 
+            v-model="passwordVisible"
+          />
+          <SimpleIcon class="swap-off" icon="eye" :size="2" />
+          <SimpleIcon class="swap-on" icon="eye-off" :size="2" />
+        </label>
       </label>
-    </label>
-    
-    <!-- Show error message and/or fieldset label -->
-    <div class="mt-1">
-      <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
-      <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
-    </div>
-  </fieldset>
+      
+      <!-- Show error message and/or fieldset label -->
+      <div class="mt-1">
+        <p v-if="errorMessage" class="text-error text-xs">{{ errorMessage }}</p>
+        <p v-else-if="fieldsetLabel" class="fieldset-label">{{ fieldsetLabel }}</p>
+      </div>
+    </fieldset>
+  </div>
 </template>

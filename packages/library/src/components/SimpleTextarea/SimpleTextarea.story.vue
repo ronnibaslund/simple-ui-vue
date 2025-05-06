@@ -39,6 +39,52 @@ const handleSubmit = () => {
         />
       </div>
     </Variant>
+    
+    <Variant title="Label and Error Examples">
+      <div class="p-4 max-w-md mx-auto">
+        <h3 class="text-lg font-bold mb-4">Label and Error Examples</h3>
+        <div class="space-y-4">
+          <div>
+            <h4 class="font-medium mb-2">With Label</h4>
+            <SimpleTextarea 
+              v-model="basicValue" 
+              label="Description"
+              placeholder="Enter a description" 
+            />
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">With Label + Required</h4>
+            <SimpleTextarea 
+              v-model="basicValue" 
+              label="Description"
+              placeholder="Enter a description"
+              required
+            />
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">With Error Message</h4>
+            <SimpleTextarea 
+              v-model="basicValue" 
+              label="Description"
+              placeholder="Enter a description"
+              error-message="Please enter a description"
+            />
+          </div>
+          
+          <div>
+            <h4 class="font-medium mb-2">With Has Error Flag</h4>
+            <SimpleTextarea 
+              v-model="basicValue" 
+              label="Description"
+              placeholder="Enter a description"
+              has-error
+            />
+          </div>
+        </div>
+      </div>
+    </Variant>
 
     <Variant title="Ghost Style">
       <div class="p-4 max-w-md mx-auto">
@@ -213,16 +259,16 @@ const handleSubmit = () => {
             :rows="3"
           />
           
-          <div class="pt-4">
-            <button type="submit" class="btn btn-primary">
-              {{ formState.submitted ? 'Submitting...' : 'Submit' }}
+          <div class="flex justify-end">
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              :class="{ 'loading': formState.submitted }"
+            >
+              Submit
             </button>
           </div>
         </form>
-        
-        <div v-if="formState.submitted" class="mt-4 p-3 bg-success text-success-content rounded">
-          Form submitted successfully!
-        </div>
       </div>
     </Variant>
   </Story>
@@ -242,6 +288,7 @@ A textarea component with various styling options and validation support.
 - Validation integration
 - Form context integration
 - Customizable number of rows
+- Labels and error handling
 
 ## Props
 
@@ -261,6 +308,9 @@ A textarea component with various styling options and validation support.
 | required | boolean | false | Whether the field is required |
 | validation | ValidationRule \| ValidationRule[] | undefined | Custom validation rules |
 | error | string | undefined | Error message to display |
+| label | string | undefined | Label to display above the textarea |
+| errorMessage | string | undefined | Alternative way to provide error message |
+| hasError | boolean | false | Whether to show textarea in error state |
 
 ## Events
 
@@ -279,6 +329,27 @@ A textarea component with various styling options and validation support.
 <SimpleTextarea 
   v-model="feedback" 
   placeholder="Enter your feedback"
+/>
+```
+
+### With Label
+
+```vue
+<SimpleTextarea 
+  v-model="description" 
+  label="Description"
+  placeholder="Enter a description"
+/>
+```
+
+### With Error Message
+
+```vue
+<SimpleTextarea 
+  v-model="description" 
+  label="Description"
+  placeholder="Enter a description"
+  error-message="Please enter a description"
 />
 ```
 

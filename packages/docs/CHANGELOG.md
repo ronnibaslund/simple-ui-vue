@@ -1,5 +1,16 @@
 # docs
 
+## 1.2.0
+
+### Minor Changes
+
+- f1d4de5: updates
+
+### Patch Changes
+
+- Updated dependencies [f1d4de5]
+  - simple-daisy-vue@2.8.0
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.8.0
+
+### Minor Changes
+
+- f1d4de5: updates
+
 ## 2.7.0
 
 ### Minor Changes

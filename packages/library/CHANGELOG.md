@@ -1,5 +1,11 @@
 # simple-daisy-vue
 
+## 2.7.0
+
+### Minor Changes
+
+- 7f2acea: updates
+
 ## 2.6.0
 
 ### Minor Changes

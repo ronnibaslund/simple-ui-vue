@@ -1,5 +1,16 @@
 # docs
 
+## 1.1.0
+
+### Minor Changes
+
+- 7f2acea: updates
+
+### Patch Changes
+
+- Updated dependencies [7f2acea]
+  - simple-daisy-vue@2.7.0
+
 ## 2.1.5
 
 ### Patch Changes
